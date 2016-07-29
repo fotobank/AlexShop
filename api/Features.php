@@ -11,10 +11,18 @@
  
 require_once('Simpla.php');
 
+/**
+ * Class Features
+ */
 class Features extends Simpla
-{	
-	
-	function get_features($filter = array())
+{
+
+    /**
+     * @param array $filter
+     *
+     * @return array|bool
+     */
+    public function get_features($filter = array())
 	{
 		$category_id_filter = '';	
 		if(isset($filter['category_id']))
@@ -22,7 +30,7 @@ class Features extends Simpla
 		
 		$in_filter_filter = '';	
 		if(isset($filter['in_filter']))
-			$in_filter_filter = $this->db->placehold('AND f.in_filter=?', intval($filter['in_filter']));
+			$in_filter_filter = $this->db->placehold('AND f.in_filter=?', (int)$filter['in_filter']);
 		
 		$id_filter = '';	
 		if(!empty($filter['id']))
@@ -35,83 +43,124 @@ class Features extends Simpla
 		$this->db->query($query);
 		return $this->db->results();
 	}
-		
-	function get_feature($id)
+
+    /**
+     * @param $id
+     *
+     * @return bool|int
+     */
+    public function get_feature($id)
 	{
 		// Выбираем свойство
-		$query = $this->db->placehold("SELECT id, name, position, in_filter FROM __features WHERE id=? LIMIT 1", $id);
+		$query = $this->db->placehold('SELECT id, name, position, in_filter FROM __features WHERE id=? LIMIT 1', $id);
 		$this->db->query($query);
-		$feature = $this->db->result();
 
-		return $feature;
+        return $this->db->result();
 	}
-	
-	function get_feature_categories($id)
+
+    /**
+     * @param $id
+     *
+     * @return array|bool
+     */
+    public function get_feature_categories($id)
 	{
-		$query = $this->db->placehold("SELECT cf.category_id as category_id FROM __categories_features cf
-										WHERE cf.feature_id = ?", $id);
+		$query = $this->db->placehold('SELECT cf.category_id as category_id FROM __categories_features cf
+										WHERE cf.feature_id = ?', $id);
 		$this->db->query($query);
 		return $this->db->results('category_id');	
 	}
-	
-	public function add_feature($feature)
+
+    /**
+     * @param $feature
+     *
+     * @return mixed
+     */
+    public function add_feature($feature)
 	{
-		$query = $this->db->placehold("INSERT INTO __features SET ?%", $feature);
+		$query = $this->db->placehold('INSERT INTO __features SET ?%', $feature);
 		$this->db->query($query);
 		$id = $this->db->insert_id();
-		$query = $this->db->placehold("UPDATE __features SET position=id WHERE id=? LIMIT 1", $id);
+		$query = $this->db->placehold('UPDATE __features SET position=id WHERE id=? LIMIT 1', $id);
 		$this->db->query($query);
 		return $id;
 	}
-		
-	public function update_feature($id, $feature)
+
+    /**
+     * @param $id
+     * @param $feature
+     *
+     * @return mixed
+     */
+    public function update_feature($id, $feature)
 	{
-		$query = $this->db->placehold("UPDATE __features SET ?% WHERE id in(?@) LIMIT ?", (array)$feature, (array)$id, count((array)$id));
+		$query = $this->db->placehold('UPDATE __features SET ?% WHERE id in(?@) LIMIT ?', (array)$feature, (array)$id, count((array)$id));
 		$this->db->query($query);
 		return $id;
 	}
-	
-	public function delete_feature($id = array())
+
+    /**
+     * @param array $id
+     */
+    public function delete_feature($id = array())
 	{
 		if(!empty($id))
 		{
-			$query = $this->db->placehold("DELETE FROM __features WHERE id=? LIMIT 1", intval($id));
+			$query = $this->db->placehold('DELETE FROM __features WHERE id=? LIMIT 1', (int)$id);
 			$this->db->query($query);
-			$query = $this->db->placehold("DELETE FROM __options WHERE feature_id=?", intval($id));
+			$query = $this->db->placehold('DELETE FROM __options WHERE feature_id=?', (int)$id);
 			$this->db->query($query);	
-			$query = $this->db->placehold("DELETE FROM __categories_features WHERE feature_id=?", intval($id));
+			$query = $this->db->placehold('DELETE FROM __categories_features WHERE feature_id=?', (int)$id);
 			$this->db->query($query);	
 		}
 	}
-	
 
-	public function delete_option($product_id, $feature_id)
+
+    /**
+     * @param $product_id
+     * @param $feature_id
+     */
+    public function delete_option($product_id, $feature_id)
 	{
-		$query = $this->db->placehold("DELETE FROM __options WHERE product_id=? AND feature_id=? LIMIT 1", intval($product_id), intval($feature_id));
+		$query = $this->db->placehold("DELETE FROM __options WHERE product_id=? AND feature_id=? LIMIT 1", (int)$product_id, (int)$feature_id);
 		$this->db->query($query);
 	}
 
-	
-	public function update_option($product_id, $feature_id, $value)
+
+    /**
+     * @param $product_id
+     * @param $feature_id
+     * @param $value
+     *
+     * @return mixed
+     */public function update_option($product_id, $feature_id, $value)
 	{	 
 		if($value != '')
-			$query = $this->db->placehold("REPLACE INTO __options SET value=?, product_id=?, feature_id=?", $value, intval($product_id), intval($feature_id));
+			$query = $this->db->placehold('REPLACE INTO __options SET value=?, product_id=?, feature_id=?', $value, (int)$product_id, (int)$feature_id);
 		else
-			$query = $this->db->placehold("DELETE FROM __options WHERE feature_id=? AND product_id=?", intval($feature_id), intval($product_id));
+			$query = $this->db->placehold('DELETE FROM __options WHERE feature_id=? AND product_id=?', (int)$feature_id, (int)$product_id);
 		return $this->db->query($query);
 	}
 
 
-	public function add_feature_category($id, $category_id)
+    /**
+     * @param $id
+     * @param $category_id
+     */
+    public function add_feature_category($id, $category_id)
 	{
-		$query = $this->db->placehold("INSERT IGNORE INTO __categories_features SET feature_id=?, category_id=?", $id, $category_id);
+		$query = $this->db->placehold('INSERT IGNORE INTO __categories_features SET feature_id=?, category_id=?', $id, $category_id);
 		$this->db->query($query);
 	}
-			
-	public function update_feature_categories($id, $categories)
+
+    /**
+     * @param $id
+     * @param $categories
+     */
+    public function update_feature_categories($id, $categories)
 	{
-		$id = intval($id);
-		$query = $this->db->placehold("DELETE FROM __categories_features WHERE feature_id=?", $id);
+		$id = (int)$id;
+		$query = $this->db->placehold('DELETE FROM __categories_features WHERE feature_id=?', $id);
 		$this->db->query($query);
 		
 		
@@ -119,29 +168,34 @@ class Features extends Simpla
 		{
 			$values = array();
 			foreach($categories as $category)
-				$values[] = "($id , ".intval($category).")";
+				$values[] = "($id , ". (int)$category .")";
 	
 			$query = $this->db->placehold("INSERT INTO __categories_features (feature_id, category_id) VALUES ".implode(', ', $values));
 			$this->db->query($query);
 
 			// Удалим значения из options 
-			$query = $this->db->placehold("DELETE o FROM __options o
+			$query = $this->db->placehold('DELETE o FROM __options o
 			                               LEFT JOIN __products_categories pc ON pc.product_id=o.product_id
-			                               WHERE o.feature_id=? AND pc.position=(SELECT MIN(pc2.position) FROM __products_categories pc2 WHERE pc.product_id=pc2.product_id) AND pc.category_id not in(?@)", $id, $categories);
+			                               WHERE o.feature_id=? AND pc.position=(SELECT MIN(pc2.position) FROM __products_categories pc2 WHERE pc.product_id=pc2.product_id) AND pc.category_id not in(?@)', $id, $categories);
 			$this->db->query($query);
 		}
 		else
 		{
 			// Удалим значения из options 
-			$query = $this->db->placehold("DELETE o FROM __options o WHERE o.feature_id=?", $id);
+			$query = $this->db->placehold('DELETE o FROM __options o WHERE o.feature_id=?', $id);
 			$this->db->query($query);
 		}
 	}
-			
 
-	public function get_options($filter = array())
-	{
-		$feature_id_filter = '';
+
+    /**
+     * @param array $filter
+     *
+     * @return array|bool
+     */
+    public function get_options(array $filter = [])
+    {
+        $feature_id_filter = '';
 		$product_id_filter = '';
 		$category_id_filter = '';
 		$visible_filter = '';
@@ -184,22 +238,22 @@ class Features extends Simpla
 			WHERE 1 $feature_id_filter $product_id_filter $brand_id_filter $features_filter GROUP BY po.feature_id, po.value ORDER BY value=0, -value DESC, value");
 
 		$this->db->query($query);
-		$res = $this->db->results();
 
-		return $res;
+        return $this->db->results();
 	}
-	
-	public function get_product_options($product_id)
+
+    /**
+     * @param $product_id
+     *
+     * @return array|bool
+     */public function get_product_options($product_id)
 	{
 		$query = $this->db->placehold("SELECT f.id as feature_id, f.name, po.value, po.product_id FROM __options po LEFT JOIN __features f ON f.id=po.feature_id
 										WHERE po.product_id in(?@) ORDER BY f.position", (array)$product_id);
 
 		$this->db->query($query);
-		$res = $this->db->results();
 
-		return $res;
+        return $this->db->results();
 	}
-	
-
 
 }
