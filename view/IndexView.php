@@ -30,7 +30,7 @@ class IndexView extends View
 	 * Отображение
 	 *
 	 */
-	function fetch()
+	public function fetch()
 	{
 		// Содержимое корзины
 		$this->design->assign('cart',		$this->cart->get_cart());

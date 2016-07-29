@@ -5,7 +5,7 @@ chdir ('../../');
 require_once('api/Simpla.php');
 $simpla = new Simpla();
 
-require_once(dirname(__FILE__).'/PawInvoiceView.php');
+require_once(__DIR__.'/PawInvoiceView.php');
 $pawView = new PawInvoiceView();
 
 if (isset($_REQUEST['invoice']))
@@ -14,7 +14,7 @@ if (isset($_REQUEST['invoice']))
 	$method = $simpla->payment->get_payment_method(intval($order->payment_method_id));
 	$settings = unserialize($method->settings);
 	
-	require_once (dirname(__FILE__).'/MonetaAPI/MonetaWebService.php');
+	require_once (__DIR__.'/MonetaAPI/MonetaWebService.php');
 	switch ($settings['payment_url'])
 	{
 		case 'www.payanyway.ru':

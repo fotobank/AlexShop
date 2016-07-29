@@ -43,7 +43,7 @@ if (!defined('DS')) {
  * Sets SMARTY_DIR only if user application has not already defined it.
  */
 if (!defined('SMARTY_DIR')) {
-    define('SMARTY_DIR', dirname(__FILE__) . DS);
+    define('SMARTY_DIR', __DIR__ . DS);
 }
 
 /**
@@ -632,7 +632,7 @@ class Smarty extends Smarty_Internal_TemplateBase
             ->setCacheDir('.' . DS . 'cache' . DS)
             ->setConfigDir('.' . DS . 'configs' . DS);
 
-        $this->debug_tpl = 'file:' . dirname(__FILE__) . '/debug.tpl';
+        $this->debug_tpl = 'file:' . __DIR__ . '/debug.tpl';
         if (isset($_SERVER['SCRIPT_NAME'])) {
             $this->assignGlobal('SCRIPT_NAME', $_SERVER['SCRIPT_NAME']);
         }
@@ -949,7 +949,7 @@ class Smarty extends Smarty_Internal_TemplateBase
                 }
         }
 
-        $this->joined_config_dir = join(DIRECTORY_SEPARATOR, $this->config_dir);
+        $this->joined_config_dir = implode(DIRECTORY_SEPARATOR, $this->config_dir);
 
         return $this;
     }
