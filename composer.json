@@ -1,0 +1,26 @@
+{
+  "name": "jurii/alexshop",
+  "description": "The Shopping Framework.",
+  "keywords": [
+    "framework",
+    "alexshop"
+  ],
+  "license": "MIT",
+  "type": "project",
+  "repositories": [
+    {
+      "url": "https://github.com/fotobank/AlexShop.git",
+      "type": "git"
+    }
+  ],
+  "authors": [
+    {
+      "name": "Алексеев Юрий",
+      "email": "aleksjurii@gmail.com"
+    }
+  ],
+  "minimum-stability": "dev",
+  "require": {
+    "php": ">=5.5.9"
+  }
+}
