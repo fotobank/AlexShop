@@ -113,6 +113,7 @@ class View extends Simpla
             $this->design->smarty->registerPlugin('function', 'get_featured_products', [$this, 'get_featured_products_plugin']);
             $this->design->smarty->registerPlugin('function', 'get_new_products', [$this, 'get_new_products_plugin']);
             $this->design->smarty->registerPlugin('function', 'get_discounted_products', [$this, 'get_discounted_products_plugin']);
+            $this->design->smarty->registerPlugin("function", "get_uni", array($this, 'uni_plugin'));
         }
     }
 
@@ -315,5 +316,10 @@ class View extends Simpla
             $smarty->assign($params['var'], $products);
 
         }
+    }
+
+    public function uni_plugin($params, &$smarty){
+        if(!empty($params['var']))
+            $smarty->assign($params['var'], $this->$params['class']->$params['method']($params));
     }
 }

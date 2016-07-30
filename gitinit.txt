@@ -8,10 +8,50 @@ git remote add origin https://github.com/fotobank/AlexShop.git
 git push -u origin master
 
 …or push an existing repository from the command line
-
 git remote add origin https://github.com/fotobank/AlexShop.git
 git push -u origin master
-
 …or import code from another repository
-
 You can initialize this repository with code from a Subversion, Mercurial, or TFS project.
+
+============================================================================================================
+
+Универсальный плагин для вызова нужных функций API прямо в шаблоне без надобности дорабатывать PHP код:
+Использовать в любом шаблоне нужно так:
+{get_uni var=posts class=blog method=get_posts limit=4}
+{if $posts}
+{foreach $posts as $post}
+<span>{$post->name}</span>
+{/foreach}
+{/if}
+
+var=posts - название нашей будущей переменной
+class=blog - название класса к которому мы обращаемся (список классов Вы можете посмотреть в папке api)
+method=get_posts - метод (функция) которая нам нужна из класса blog
+limit=4 - параметры фильтрации нашего запроса
+
+==========================================================================================
+
+Возможность вызывать любые методы api из шаблона:
+Пример:
+
+{api module=delivery method=get_deliveries var=deliveries enabled=1}
+{foreach $deliveries as $d}
+{$d->name}
+{/foreach}
+
+module: название модуля (config,  settings, design, products, variants, categories, brands, features, money, pages, blog, cart, image, delivery, payment, orders, users, coupons, comments, feedbacks, notify, managers);
+
+method: название метода соответствующего модуля
+
+var: имя переменной, в которой будет сохранен результат вызова
+далее идут параметры, которые нужно передать
+Приведенный пример аналогичен добавлению в обработчик шаблона такого кода
+
+$results =  $this->deliveries->get_deliveries(array('enabled'=>1))
+$this->design->assign('deliveries', $results);
+
+============================================================================
+
+{youtube url='ссылка на видео' width='ширина блока' height='высота блока'}
+
+============================================================================

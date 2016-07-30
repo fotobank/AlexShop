@@ -15,7 +15,8 @@
 
 
 {* Рекомендуемые товары *}
-{get_featured_products var=featured_products}
+{*{get_featured_products var=featured_products}*}
+{get_featured_products var=featured_products sort='rand'}
 {if $featured_products}
 <!-- Список товаров-->
 <h1>Рекомендуемые товары</h1>

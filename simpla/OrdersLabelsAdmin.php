@@ -40,6 +40,3 @@ class OrdersLabelsAdmin extends Simpla
 	return $this->design->fetch('orders_labels.tpl');
   }
 }
-
-
-?>

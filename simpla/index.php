@@ -30,7 +30,6 @@ if(!$backend->request->check_session())
 	trigger_error('Session expired', E_USER_WARNING);
 }
 
-
 print $backend->fetch();
 
 // Отладочная информация
