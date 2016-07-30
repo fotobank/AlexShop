@@ -234,7 +234,7 @@ class Features extends Simpla
             SELECT po.product_id, po.feature_id, po.value, count(po.product_id) as count
 		    FROM __options po $visible_filter $category_id_filter
 			WHERE 1 $feature_id_filter $product_id_filter $brand_id_filter $features_filter 
-			GROUP BY po.feature_id, po.value 
+			GROUP BY po.product_id, po.feature_id, po.value
 			ORDER BY value=0, -value DESC, value");
 
 		$this->db->query($query);

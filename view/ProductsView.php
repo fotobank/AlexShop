@@ -78,19 +78,19 @@ class ProductsView extends View
             if (!empty($features_ids))
                 $options_filter['feature_id'] = $features_ids;
             $options_filter['category_id'] = $category->children;
-            if (isset($filter['features']))
-                $options_filter['features'] = $filter['features'];
+            /*if (isset($filter['features']))
+                $options_filter['features'] = $filter['features'];*/
             if (!empty($brand))
                 $options_filter['brand_id'] = $brand->id;
 
-            //	$options = $this->features->get_options($options_filter);
-
-            if (isset($options) && is_array($options)){
+            	$options = $this->features->get_options($options_filter);
+             if (isset($options) && is_array($options)){
                 foreach ($options as $option){
                     if (isset($features[$option->feature_id]))
-                        $features[$option->feature_id]->options[] = $option;
+                        $features[$option->feature_id]->options[$option->value] = $option->value;
                 }
             }
+            // удаление пустых блоков
             foreach ($features as $i => &$feature){
                 if (empty($feature->options))
                     unset($features[$i]);
