@@ -93,12 +93,12 @@ class ProductsView extends View
 			
 			$options = $this->features->get_options($options_filter);
 
-			foreach($options as $option)
-			{
-				if(isset($features[$option->feature_id]))
-					$features[$option->feature_id]->options[] = $option;
-			}
-			
+            if(is_array($options)){
+                foreach ($options as $option){
+                    if (isset($features[$option->feature_id]))
+                        $features[$option->feature_id]->options[] = $option;
+                }
+            }
 			foreach($features as $i=>&$feature)
 			{ 
 				if(empty($feature->options))

@@ -82,16 +82,20 @@ class Database extends Simpla
     /**
      * Запрос к базе. Обазятелен первый аргумент - текст запроса.
      * При указании других аргументов автоматически выполняется placehold() для запроса с подстановкой этих аргументов
+     *
+     * @param array $args
+     *
+     * @return bool|\mysqli_result
      */
-    public function query()
+    public function query(...$args)
     {
         if (is_object($this->res))
             $this->res->free();
 
-        $args = func_get_args();
-        $q = call_user_func_array([$this, 'placehold'], $args);
+        $q = $this->placehold(...$args);
+        $this->res = $this->mysqli->query($q);
 
-        return $this->res = $this->mysqli->query($q);
+        return $this->res;
     }
 
 
@@ -106,14 +110,17 @@ class Database extends Simpla
 
     /**
      * Плейсхолдер для запросов. Пример работы: $query = $db->placehold('SELECT name FROM products WHERE id=?', $id);
+     *
+     * @param array $args
+     *
+     * @return bool|mixed|string
      */
-    public function placehold()
+    public function placehold(...$args)
     {
-        $args = func_get_args();
         $tmpl = array_shift($args);
         // Заменяем все __ на префикс, но только необрамленные кавычками
         $tmpl = preg_replace('/([^"\'0-9a-z_])__([a-z_]+[^"\'])/i', "\$1" . $this->config->db_prefix . "\$2", $tmpl);
-        if (!empty($args)){
+        if (0 !== count($args)){
             $result = $this->sql_placeholder_ex($tmpl, $args, $error);
             if ($result === false){
                 $error = "Placeholder substitution error. Diagnostics: \"$error\"";
@@ -147,8 +154,7 @@ class Database extends Simpla
         while ($row = $this->res->fetch_object()){
             if (!empty($field) && isset($row->$field)){
                 array_push($results, $row->$field);
-            }
-            else {
+            } else {
                 array_push($results, $row);
             }
         }

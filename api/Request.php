@@ -56,13 +56,13 @@ class Request extends Simpla
     	if(!empty($type) && is_array($val))
     		$val = reset($val);
     	
-    	if($type == 'string')
-    		return strval(preg_replace('/[^\p{L}\p{Nd}\d\s_\-\.\%\s]/ui', '', $val));
+    	if($type === 'string')
+    		return (string)preg_replace('/[^\p{L}\p{Nd}\d\s_\-\.\%\s]/ui', '', $val);
     		
-    	if($type == 'integer')
-    		return intval($val);
+    	if($type === 'integer')
+    		return (int)$val;
 
-    	if($type == 'boolean')
+    	if($type === 'boolean')
     		return !empty($val);
     		
     	return $val;
