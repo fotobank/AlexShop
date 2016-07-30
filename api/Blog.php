@@ -24,7 +24,7 @@ class Blog extends Simpla
 	public function get_post($id)
 	{
 		if(is_int($id))
-			$where = $this->db->placehold(' WHERE b.id=? ', intval($id));
+			$where = $this->db->placehold(' WHERE b.id=? ', (int)($id));
 		else
 			$where = $this->db->placehold(' WHERE b.url=? ', $id);
 		
@@ -54,16 +54,16 @@ class Blog extends Simpla
 		$posts = array();
 		
 		if(isset($filter['limit']))
-			$limit = max(1, intval($filter['limit']));
+			$limit = max(1, (int)($filter['limit']));
 
 		if(isset($filter['page']))
-			$page = max(1, intval($filter['page']));
+			$page = max(1, (int)($filter['page']));
 
 		if(!empty($filter['id']))
 			$post_id_filter = $this->db->placehold('AND b.id in(?@)', (array)$filter['id']);
 			
 		if(isset($filter['visible']))
-			$visible_filter = $this->db->placehold('AND b.visible = ?', intval($filter['visible']));		
+			$visible_filter = $this->db->placehold('AND b.visible = ?', (int)($filter['visible']));
 		
 		if(isset($filter['keyword']))
 		{
@@ -101,7 +101,7 @@ class Blog extends Simpla
 			$post_id_filter = $this->db->placehold('AND b.id in(?@)', (array)$filter['id']);
 			
 		if(isset($filter['visible']))
-			$visible_filter = $this->db->placehold('AND b.visible = ?', intval($filter['visible']));		
+			$visible_filter = $this->db->placehold('AND b.visible = ?', (int)($filter['visible']));
 
 		if(isset($filter['keyword']))
 		{
@@ -164,10 +164,10 @@ class Blog extends Simpla
 	{
 		if(!empty($id))
 		{
-			$query = $this->db->placehold("DELETE FROM __blog WHERE id=? LIMIT 1", intval($id));
+			$query = $this->db->placehold("DELETE FROM __blog WHERE id=? LIMIT 1", (int)($id));
 			if($this->db->query($query))
 			{
-				$query = $this->db->placehold("DELETE FROM __comments WHERE type='blog' AND object_id=?", intval($id));
+				$query = $this->db->placehold("DELETE FROM __comments WHERE type='blog' AND object_id=?", (int)($id));
 				if($this->db->query($query))
 					return true;
 			}							
@@ -193,7 +193,7 @@ class Blog extends Simpla
 		                  $date, $id, $date);
 		$next_id = $this->db->result('id');
 		if($next_id)
-			return $this->get_post(intval($next_id));
+			return $this->get_post((int)($next_id));
 		else
 			return false; 
 	}
@@ -215,7 +215,7 @@ class Blog extends Simpla
 		                  $date, $id, $date);
 		$prev_id = $this->db->result('id');
 		if($prev_id)
-			return $this->get_post(intval($prev_id));
+			return $this->get_post((int)($prev_id));
 		else
 			return false; 
 	}

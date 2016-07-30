@@ -11,7 +11,7 @@ class InvoiceBox extends Simpla
 		
 		$order 			= $this->orders->get_order((int)$order_id);
 		$payment_method 	= $this->payment->get_payment_method($order->payment_method_id);
-		$payment_currency 	= $this->money->get_currency(intval($payment_method->currency_id));
+		$payment_currency 	= $this->money->get_currency((int)($payment_method->currency_id));
 		$payment_settings 	= $this->payment->get_payment_settings($payment_method->id);
 
 		// регистрационная информация (идентификаторы)

@@ -85,7 +85,7 @@ class Request extends Simpla
     		return strval(preg_replace('/[^\p{L}\p{Nd}\d\s_\-\.\%\s]/ui', '', $val));
     		
     	if($type == 'integer')
-    		return intval($val);
+    		return (int)($val);
 
     	if($type == 'boolean')
     		return !empty($val);

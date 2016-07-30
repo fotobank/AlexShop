@@ -25,19 +25,19 @@ if($_POST['notification_type'] !== 'p2p-incoming')
 ////////////////////////////////////////////////
 // Выберем заказ из базы
 ////////////////////////////////////////////////
-$order = $simpla->orders->get_order(intval($_POST['label']));
+$order = $simpla->orders->get_order((int)($_POST['label']));
 if(empty($order))
 	err('Оплачиваемый заказ не найден');
  
 ////////////////////////////////////////////////
 // Выбираем из базы соответствующий метод оплаты
 ////////////////////////////////////////////////
-$method = $simpla->payment->get_payment_method(intval($order->payment_method_id));
+$method = $simpla->payment->get_payment_method((int)($order->payment_method_id));
 if(empty($method))
 	err("Неизвестный метод оплаты");
 	
 $settings = unserialize($method->settings);
-$payment_currency = $simpla->money->get_currency(intval($method->currency_id));
+$payment_currency = $simpla->money->get_currency((int)($method->currency_id));
 
 // Проверяем контрольную подпись
 $hash = sha1($_POST['notification_type'].'&'.$_POST['operation_id'].'&'.$_POST['amount'].'&'.$_POST['currency'].'&'.$_POST['datetime'].'&'.$_POST['sender'].'&'.$_POST['codepro'].'&'.$settings['yandex_secret'].'&'.$_POST['label']);
@@ -56,14 +56,14 @@ if($_POST['amount'] != $amount || $_POST['amount']<=0)
 	err("incorrect price");
 
 // Установим статус оплачен
-$simpla->orders->update_order(intval($order->id), array('paid'=>1));
+$simpla->orders->update_order((int)($order->id), array('paid'=>1));
 
 // Отправим уведомление на email
-$simpla->notify->email_order_user(intval($order->id));
-$simpla->notify->email_order_admin(intval($order->id));
+$simpla->notify->email_order_user((int)($order->id));
+$simpla->notify->email_order_admin((int)($order->id));
 
 // Спишем товары  
-$simpla->orders->close(intval($order->id));
+$simpla->orders->close((int)($order->id));
 
 function err($msg)
 {

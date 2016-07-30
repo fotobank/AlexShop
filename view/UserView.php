@@ -44,7 +44,7 @@ class UserView extends View
 				$this->design->assign('error', 'empty_email');
 			elseif($user_id = $this->users->update_user($this->user->id, array('name'=>$name, 'email'=>$email)))
 			{
-				$this->user = $this->users->get_user(intval($user_id));
+				$this->user = $this->users->get_user((int)($user_id));
 				$this->design->assign('name', $this->user->name);
 				$this->design->assign('user', $this->user);
 				$this->design->assign('email', $this->user->email);				

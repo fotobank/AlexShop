@@ -5,23 +5,23 @@ require_once('../../api/Simpla.php');
 class ExportAjax extends Simpla
 {	
 	private $columns_names = array(
-			'category'=>         'Категория',
-			'name'=>             'Товар',
-			'price'=>            'Цена',
-			'url'=>              'Адрес',
-			'visible'=>          'Видим',
-			'featured'=>         'Рекомендуемый',
-			'brand'=>            'Бренд',
-			'variant'=>          'Вариант',
-			'compare_price'=>    'Старая цена',
-			'sku'=>              'Артикул',
-			'stock'=>            'Склад',
-			'meta_title'=>       'Заголовок страницы',
-			'meta_keywords'=>    'Ключевые слова',
-			'meta_description'=> 'Описание страницы',
-			'annotation'=>       'Аннотация',
-			'body'=>             'Описание',
-			'images'=>           'Изображения'
+			'category'=>         'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ',
+			'name'=>             'пїЅпїЅпїЅпїЅпїЅ',
+			'price'=>            'пїЅпїЅпїЅпїЅ',
+			'url'=>              'пїЅпїЅпїЅпїЅпїЅ',
+			'visible'=>          'пїЅпїЅпїЅпїЅпїЅ',
+			'featured'=>         'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ',
+			'brand'=>            'пїЅпїЅпїЅпїЅпїЅ',
+			'variant'=>          'пїЅпїЅпїЅпїЅпїЅпїЅпїЅ',
+			'compare_price'=>    'пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ',
+			'sku'=>              'пїЅпїЅпїЅпїЅпїЅпїЅпїЅ',
+			'stock'=>            'пїЅпїЅпїЅпїЅпїЅ',
+			'meta_title'=>       'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ',
+			'meta_keywords'=>    'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ',
+			'meta_description'=> 'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ',
+			'annotation'=>       'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ',
+			'body'=>             'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ',
+			'images'=>           'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ'
 			);
 			
 	private $column_delimiter = ';';
@@ -36,41 +36,41 @@ class ExportAjax extends Simpla
 		if(!$this->managers->access('export'))
 			return false;
 
-		// Эксель кушает только 1251
+		// пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ 1251
 		setlocale(LC_ALL, 'ru_RU.1251');
 		$this->db->query('SET NAMES cp1251');
 	
-		// Страница, которую экспортируем
+		// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 		$page = $this->request->get('page');
 		if(empty($page) || $page==1)
 		{
 			$page = 1;
-			// Если начали сначала - удалим старый файл экспорта
+			// пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ - пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 			if(is_writable($this->export_files_dir.$this->filename))
 				unlink($this->export_files_dir.$this->filename);
 		}
 		
-		// Открываем файл экспорта на добавление
+		// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 		$f = fopen($this->export_files_dir.$this->filename, 'ab');
 		
-		// Добавим в список колонок свойства товаров
+		// пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 		$features = $this->features->get_features();
 		foreach($features as $feature)
 			$this->columns_names[$feature->name] = $feature->name;
 		
-		// Если начали сначала - добавим в первую строку названия колонок
+		// пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ - пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 		if($page == 1)
 		{
 			fputcsv($f, $this->columns_names, $this->column_delimiter);
 		}
 		
-		// Все товары
+		// пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
 		$products = array();
  		foreach($this->products->get_products(array('page'=>$page, 'limit'=>$this->products_count)) as $p)
  		{
  			$products[$p->id] = (array)$p;
  			
-	 		// Свойства товаров
+	 		// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	 		$options = $this->features->get_product_options($p->id);
 	 		foreach($options as $option)
 	 		{
@@ -84,7 +84,7 @@ class ExportAjax extends Simpla
  		if(empty($products))
  			return false;
  		
- 		// Категории товаров
+ 		// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
  		foreach($products as $p_id=>&$product)
  		{
 	 		$categories = array();
@@ -95,21 +95,21 @@ class ExportAjax extends Simpla
 	 			$cat = $this->categories->get_category((int)$category->category_id);
 	 			if(!empty($cat))
  				{
-	 				// Вычисляем составляющие категории
+	 				// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	 				foreach($cat->path as $p)
 	 					$path[] = str_replace($this->subcategory_delimiter, '\\'.$this->subcategory_delimiter, $p->name);
-	 				// Добавляем категорию к товару 
+	 				// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ 
 	 				$categories[] = implode('/', $path);
  				}
 	 		}
 	 		$product['category'] = implode(', ', $categories);
  		}
  		
- 		// Изображения товаров
+ 		// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
  		$images = $this->products->get_images(array('product_id'=>array_keys($products)));
  		foreach($images as $image)
  		{
- 			// Добавляем изображения к товару чезер запятую
+ 			// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
  			if(empty($products[$image->product_id]['images']))
  				$products[$image->product_id]['images'] = $image->filename;
  			else

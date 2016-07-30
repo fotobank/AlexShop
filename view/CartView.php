@@ -32,7 +32,7 @@ class CartView extends View
     }
 
     // Удаление товара из корзины
-    if($delete_variant_id = intval($this->request->get('delete_variant')))
+    if($delete_variant_id = (int)($this->request->get('delete_variant')))
     {
       $this->cart->delete_item($delete_variant_id);
       if(!isset($_POST['submit_order']) || $_POST['submit_order']!=1)
@@ -98,7 +98,7 @@ class CartView extends View
 	    	// Добавляем товары к заказу
 	    	foreach($this->request->post('amounts') as $variant_id=>$amount)
 	    	{
-	    		$this->orders->add_purchase(array('order_id'=>$order_id, 'variant_id'=>intval($variant_id), 'amount'=>intval($amount)));
+	    		$this->orders->add_purchase(array('order_id'=>$order_id, 'variant_id'=>(int)($variant_id), 'amount'=>(int)($amount)));
 	    	}
 	    	$order = $this->orders->get_order($order_id);
 	    	

@@ -60,7 +60,7 @@ class Simpla
      */
     public function __get($name)
     {
-        // прокси классы можно писать с маленькоц или большой букв
+        // прокси классы можно писать с маленькой или большой букв
         $name = lcfirst ($name);
         $class = ucfirst($name);
         // Проверка алиаса в API

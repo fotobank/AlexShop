@@ -52,7 +52,7 @@ class LoginView extends View
 					return false;
 				
 				// Выбераем пользователя из базы
-				$user = $this->users->get_user(intval($_SESSION['password_remind_user_id']));
+				$user = $this->users->get_user((int)($_SESSION['password_remind_user_id']));
 				if(empty($user))
 					return false;
 				

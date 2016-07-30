@@ -44,7 +44,7 @@ class PageAdmin extends Simpla
 		{
 			$id = $this->request->get('id', 'integer');
 			if(!empty($id))
-				$page = $this->pages->get_page(intval($id));			
+				$page = $this->pages->get_page((int)($id));
 			else
 			{
 				$page->menu_id = $this->request->get('menu_id');

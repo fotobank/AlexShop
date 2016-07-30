@@ -31,7 +31,7 @@ class RestProducts extends Rest
 		// id
 		$filter['id'] = array();
 		foreach(explode(',', $this->request->get('id')) as $id)
-			if(($id = intval($id)) > 0)
+			if(($id = (int)($id)) > 0)
 				$filter['id'][] = $id;
 
 		// Сортировка
@@ -96,7 +96,7 @@ class RestProducts extends Rest
 					if(isset($items[$pc->product_id]))
 					{
 						$c = $pc;
-						$c = $this->categories->get_category(intval($pc->category_id));
+						$c = $this->categories->get_category((int)($pc->category_id));
 						unset($c->path);
 						unset($c->subcategories);
 						unset($c->children);
@@ -158,7 +158,7 @@ class RestProducts extends Rest
 
 	public function put()
 	{
-		$id = intval($this->request->get('id'));
+		$id = (int)($this->request->get('id'));
 		if(empty($id) || !$this->products->get_product($id))
 		{
 			header("HTTP/1.0 404 Not Found");

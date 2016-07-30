@@ -57,7 +57,7 @@ class CategoryAdmin extends Simpla
   	    			move_uploaded_file($image['tmp_name'], $this->root_dir.$this->config->categories_images_dir.$image['name']);
   	    			$this->categories->update_category($category->id, array('image'=>$image['name']));
   	    		}
-  	    		$category = $this->categories->get_category(intval($category->id));
+  	    		$category = $this->categories->get_category((int)($category->id));
 			}
 		}
 		else

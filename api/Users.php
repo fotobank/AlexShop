@@ -246,10 +246,10 @@ class Users extends Simpla
     public function delete_group($id)
     {
         if (!empty($id)){
-            $query = $this->db->placehold("UPDATE __users SET group_id=NULL WHERE group_id=? LIMIT 1", intval($id));
+            $query = $this->db->placehold("UPDATE __users SET group_id=NULL WHERE group_id=? LIMIT 1", (int)($id));
             $this->db->query($query);
 
-            $query = $this->db->placehold("DELETE FROM __groups WHERE id=? LIMIT 1", intval($id));
+            $query = $this->db->placehold("DELETE FROM __groups WHERE id=? LIMIT 1", (int)($id));
             if ($this->db->query($query))
                 return true;
         }

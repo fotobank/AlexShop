@@ -68,7 +68,7 @@ class Best2Pay extends Simpla
 		);
 		$context  = stream_context_create($options);
 		$best2pay_id = file_get_contents($url, false, $context);
-		if(intval($best2pay_id)==0)
+		if((int)($best2pay_id)==0)
 			$button_text = $best2pay_id;
 				 
 		$signature  = base64_encode(md5($sector.$best2pay_id.$password));

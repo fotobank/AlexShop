@@ -54,7 +54,7 @@ if($simpla->request->get('type') == 'sale' && $simpla->request->get('mode') == '
 		$order = new stdClass;
 
 		$order->id = $xml_order->Номер;
-		$existed_order = $simpla->orders->get_order(intval($order->id));
+		$existed_order = $simpla->orders->get_order((int)($order->id));
 		
 		$order->date = $xml_order->Дата.' '.$xml_order->Время;
 		$order->name = $xml_order->Контрагенты->Контрагент->Наименование;
@@ -132,7 +132,7 @@ if($simpla->request->get('type') == 'sale' && $simpla->request->get('mode') == '
 			$purchases_ids[] = $purchase_id;
 		}
 		// Удалим покупки, которых нет в файле
-		foreach($simpla->orders->get_purchases(array('order_id'=>intval($order->id))) as $purchase)
+		foreach($simpla->orders->get_purchases(array('order_id'=>(int)($order->id))) as $purchase)
 		{
 			if(!in_array($purchase->id, $purchases_ids))
 				$simpla->orders->delete_purchase($purchase->id);
@@ -200,7 +200,7 @@ if($simpla->request->get('type') == 'sale' && $simpla->request->get('mode') == '
 			$cont->addChild ( 'Значение', $order->email );
 
 
-			$purchases = $simpla->orders->get_purchases(array('order_id'=>intval($order->id)));
+			$purchases = $simpla->orders->get_purchases(array('order_id'=>(int)($order->id)));
 
 			$t1 = $doc->addChild ( 'Товары' );
 			foreach($purchases as $purchase)

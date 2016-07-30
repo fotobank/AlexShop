@@ -142,10 +142,10 @@ class ImportAjax extends Simpla
 			$product['body'] = trim($item['description']);
 	
 		if(isset($item['visible']))
-			$product['visible'] = intval($item['visible']);
+			$product['visible'] = (int)($item['visible']);
 
 		if(isset($item['featured']))
-			$product['featured'] = intval($item['featured']);
+			$product['featured'] = (int)($item['featured']);
 	
 		if(!empty($item['url']))
 			$product['url'] = trim($item['url']);
@@ -257,8 +257,8 @@ class ImportAjax extends Simpla
 		if(!empty($variant_id) && !empty($product_id))
 		{
 			// Нужно вернуть обновленный товар
-			$imported_item->variant = $this->variants->get_variant(intval($variant_id));			
-			$imported_item->product = $this->products->get_product(intval($product_id));						
+			$imported_item->variant = $this->variants->get_variant((int)($variant_id));
+			$imported_item->product = $this->products->get_product((int)($product_id));
 	
 			// Добавляем категории к товару
 			if(!empty($categories_ids))

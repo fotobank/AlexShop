@@ -29,7 +29,7 @@ class OrdersLabelAdmin extends Simpla
 		{
 			$id = $this->request->get('id', 'integer');
 			if(!empty($id))
-				$label = $this->orders->get_label(intval($id));			
+				$label = $this->orders->get_label((int)($id));
 		}	
 
 		$this->design->assign('label', $label);

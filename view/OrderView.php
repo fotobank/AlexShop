@@ -44,14 +44,14 @@ class OrderView extends View
 		if($url = $this->request->get('url', 'string'))
 			$order = $this->orders->get_order((string)$url);
 		elseif(!empty($_SESSION['order_id']))
-			$order = $this->orders->get_order(intval($_SESSION['order_id']));
+			$order = $this->orders->get_order((int)($_SESSION['order_id']));
 		else
 			return false;
 			
 		if(!$order)
 			return false;
 						
-		$purchases = $this->orders->get_purchases(array('order_id'=>intval($order->id)));
+		$purchases = $this->orders->get_purchases(array('order_id'=>(int)($order->id)));
 		if(!$purchases)
 			return false;
 			

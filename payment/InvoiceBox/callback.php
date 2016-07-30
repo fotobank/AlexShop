@@ -9,7 +9,7 @@ chdir ('../../');
 require_once('api/Simpla.php');
 $simpla = new Simpla();
 
-$participantId		= isset( $_REQUEST["participantId"] ) ? intval( $_REQUEST["participantId"] ) : false;
+$participantId		= isset( $_REQUEST["participantId"] ) ? (int)( $_REQUEST["participantId"] ) : false;
 $participantOrderId	= isset( $_REQUEST["participantOrderId"] ) ? trim( $_REQUEST["participantOrderId"] ) : false;
 $ucode			= isset( $_REQUEST["ucode"] ) ? trim( $_REQUEST["ucode"] ) : false;
 $timetype		= isset( $_REQUEST["timetype"] ) ? trim( $_REQUEST["timetype"] ) : false;
@@ -17,7 +17,7 @@ $time			= isset( $_REQUEST["time"] ) ? trim( $_REQUEST["time"] ) : false;
 $amount			= isset( $_REQUEST["amount"] ) ? trim( $_REQUEST["amount"] ) : false;
 $agentName		= isset( $_REQUEST["agentName"] ) ? trim( $_REQUEST["agentName"] ) : false;
 $agentPointName		= isset( $_REQUEST["agentPointName"] ) ? trim( $_REQUEST["agentPointName"] ) : false;
-$testMode		= isset( $_REQUEST["testMode"] ) ? intval( $_REQUEST["testMode"] ) : false;
+$testMode		= isset( $_REQUEST["testMode"] ) ? (int)( $_REQUEST["testMode"] ) : false;
 $sign			= isset( $_REQUEST["sign"] ) ? trim( $_REQUEST["sign"] ) : false;
 
 // -------------------------------------------------------------------------------------------------------------------
@@ -29,14 +29,14 @@ if ( !$participantOrderId )
 
 
 // Выбираем оплачиваемый заказ
-$order = $simpla->orders->get_order(intval($participantOrderId));
+$order = $simpla->orders->get_order((int)($participantOrderId));
 if ( empty( $order ) )
 {
 	die( "Указанный заказ не обнаружен в системе" );
 }; //
 
 // Выбираем из базы соответствующий метод оплаты
-$method = $simpla->payment->get_payment_method(intval($order->payment_method_id));
+$method = $simpla->payment->get_payment_method((int)($order->payment_method_id));
 if(empty($method))
 {
 	die( "Ошибка получения информации о способе оплаты по заказу" );
@@ -79,10 +79,10 @@ if($order->paid)
 
 
 // Проверка наличия товара
-$purchases = $simpla->orders->get_purchases(array('order_id'=>intval($order->id)));
+$purchases = $simpla->orders->get_purchases(array('order_id'=>(int)($order->id)));
 foreach($purchases as $purchase)
 {
-	$variant = $simpla->variants->get_variant(intval($purchase->variant_id));
+	$variant = $simpla->variants->get_variant((int)($purchase->variant_id));
 	if(empty($variant) || (!$variant->infinity && $variant->stock < $purchase->amount))
 	{
 		die( "Один или несколько товаров в заказе отсутствует" ); // Зачем это знать платежной системе?
@@ -91,12 +91,12 @@ foreach($purchases as $purchase)
 
 	
 // Установим статус оплачен
-$simpla->orders->update_order(intval($order->id), array('paid'=>1));
+$simpla->orders->update_order((int)($order->id), array('paid'=>1));
 	
 // Спишем товары  
-$simpla->orders->close(intval($order->id));
-$simpla->notify->email_order_user(intval($order->id));
-$simpla->notify->email_order_admin(intval($order->id));
+$simpla->orders->close((int)($order->id));
+$simpla->notify->email_order_user((int)($order->id));
+$simpla->notify->email_order_admin((int)($order->id));
 
 die( "OK" );
 

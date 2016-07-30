@@ -73,7 +73,7 @@ class Cart extends Simpla
 				
 				// Пользовательская скидка
 				$cart->discount = 0;
-				if(isset($_SESSION['user_id']) && $user = $this->users->get_user(intval($_SESSION['user_id'])))
+				if(isset($_SESSION['user_id']) && $user = $this->users->get_user((int)($_SESSION['user_id'])))
 					$cart->discount = $user->discount;
 					
 				$cart->total_price *= (100-$cart->discount)/100;
@@ -129,7 +129,7 @@ class Cart extends Simpla
 			// Не дадим больше чем на складе
 			$amount = min($amount, $variant->stock);
 	     
-			$_SESSION['shopping_cart'][$variant_id] = intval($amount); 
+			$_SESSION['shopping_cart'][$variant_id] = (int)($amount);
 		}
 	}
 	
@@ -151,7 +151,7 @@ class Cart extends Simpla
 			// Не дадим больше чем на складе
 			$amount = min($amount, $variant->stock);
 	     
-			$_SESSION['shopping_cart'][$variant_id] = intval($amount); 
+			$_SESSION['shopping_cart'][$variant_id] = (int)($amount);
 		}
  
 	}

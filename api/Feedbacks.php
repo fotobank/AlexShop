@@ -16,7 +16,7 @@ class Feedbacks extends Simpla
 
 	public function get_feedback($id)
 	{
-		$query = $this->db->placehold("SELECT f.id, f.name, f.email, f.ip, f.message, f.date FROM __feedbacks f WHERE id=? LIMIT 1", intval($id));
+		$query = $this->db->placehold("SELECT f.id, f.name, f.email, f.ip, f.message, f.date FROM __feedbacks f WHERE id=? LIMIT 1", (int)($id));
 
 		if($this->db->query($query))
 			return $this->db->result();
@@ -32,10 +32,10 @@ class Feedbacks extends Simpla
 		$keyword_filter = '';
 
 		if(isset($filter['limit']))
-			$limit = max(1, intval($filter['limit']));
+			$limit = max(1, (int)($filter['limit']));
 
 		if(isset($filter['page']))
-			$page = max(1, intval($filter['page']));
+			$page = max(1, (int)($filter['page']));
 
 		$sql_limit = $this->db->placehold(' LIMIT ?, ? ', ($page-1)*$limit, $limit);
 
@@ -112,7 +112,7 @@ class Feedbacks extends Simpla
 	{
 		if(!empty($id))
 		{
-			$query = $this->db->placehold("DELETE FROM __feedbacks WHERE id=? LIMIT 1", intval($id));
+			$query = $this->db->placehold("DELETE FROM __feedbacks WHERE id=? LIMIT 1", (int)($id));
 			$this->db->query($query);
 		}
 	}	

@@ -92,28 +92,28 @@ class OrderAdmin extends Simpla
 	
 				if($new_status == 0)					
 				{
-					if(!$this->orders->open(intval($order->id)))
+					if(!$this->orders->open((int)($order->id)))
 						$this->design->assign('message_error', 'error_open');
 					else
 						$this->orders->update_order($order->id, array('status'=>0));
 				}
 				elseif($new_status == 1)					
 				{
-					if(!$this->orders->close(intval($order->id)))
+					if(!$this->orders->close((int)($order->id)))
 						$this->design->assign('message_error', 'error_closing');
 					else
 						$this->orders->update_order($order->id, array('status'=>1));
 				}
 				elseif($new_status == 2)					
 				{
-					if(!$this->orders->close(intval($order->id)))
+					if(!$this->orders->close((int)($order->id)))
 						$this->design->assign('message_error', 'error_closing');
 					else
 						$this->orders->update_order($order->id, array('status'=>2));
 				}
 				elseif($new_status == 3)					
 				{
-					if(!$this->orders->open(intval($order->id)))
+					if(!$this->orders->open((int)($order->id)))
 						$this->design->assign('message_error', 'error_open');
 					else
 						$this->orders->update_order($order->id, array('status'=>3));
@@ -130,7 +130,7 @@ class OrderAdmin extends Simpla
 		else
 		{
 			$order->id = $this->request->get('id', 'integer');
-			$order = $this->orders->get_order(intval($order->id));
+			$order = $this->orders->get_order((int)($order->id));
 			// Метки заказа
 			$order_labels = array();
 			if(isset($order->id))
@@ -218,12 +218,12 @@ class OrderAdmin extends Simpla
 				$this->design->assign('payment_method', $payment_method);
 		
 				// Валюта оплаты
-				$payment_currency = $this->money->get_currency(intval($payment_method->currency_id));
+				$payment_currency = $this->money->get_currency((int)($payment_method->currency_id));
 				$this->design->assign('payment_currency', $payment_currency);
 			}
 			// Пользователь
 			if($order->user_id)
-				$this->design->assign('user', $this->users->get_user(intval($order->user_id)));
+				$this->design->assign('user', $this->users->get_user((int)($order->user_id)));
 	
 			// Соседние заказы
 			$this->design->assign('next_order', $this->orders->get_next_order($order->id, $this->request->get('status', 'string')));

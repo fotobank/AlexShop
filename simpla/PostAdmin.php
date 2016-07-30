@@ -47,7 +47,7 @@ class PostAdmin extends Simpla
 		else
 		{
 			$post->id = $this->request->get('id', 'integer');
-			$post = $this->blog->get_post(intval($post->id));
+			$post = $this->blog->get_post((int)($post->id));
 		}
 
 		if(empty($post))

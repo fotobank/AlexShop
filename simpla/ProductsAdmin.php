@@ -117,7 +117,7 @@ class ProductsAdmin extends Simpla
 			    case 'duplicate':
 			    {
 				    foreach($ids as $id)
-				    	$this->products->duplicate_product(intval($id));
+				    	$this->products->duplicate_product((int)($id));
 			        break;
 			    }
 			    case 'move_to_page':

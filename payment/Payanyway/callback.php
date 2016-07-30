@@ -10,8 +10,8 @@ $pawView = new PawInvoiceView();
 
 if (isset($_REQUEST['invoice']))
 {
-	$order = $simpla->orders->get_order(intval($_REQUEST['MNT_TRANSACTION_ID']));
-	$method = $simpla->payment->get_payment_method(intval($order->payment_method_id));
+	$order = $simpla->orders->get_order((int)($_REQUEST['MNT_TRANSACTION_ID']));
+	$method = $simpla->payment->get_payment_method((int)($order->payment_method_id));
 	$settings = unserialize($method->settings);
 	
 	require_once (__DIR__.'/MonetaAPI/MonetaWebService.php');
@@ -116,11 +116,11 @@ else
 	   && isset($_REQUEST['MNT_AMOUNT']) && isset($_REQUEST['MNT_CURRENCY_CODE']) && isset($_REQUEST['MNT_TEST_MODE'])
 	   && isset($_REQUEST['MNT_SIGNATURE']))
 	{
-		$order = $simpla->orders->get_order(intval($_REQUEST['MNT_TRANSACTION_ID']));
+		$order = $simpla->orders->get_order((int)($_REQUEST['MNT_TRANSACTION_ID']));
 		if(empty($order))
 			die('FAIL');
 
-		$method = $simpla->payment->get_payment_method(intval($order->payment_method_id));
+		$method = $simpla->payment->get_payment_method((int)($order->payment_method_id));
 		if(empty($method))
 			die("FAIL");
 
@@ -131,12 +131,12 @@ else
 		if ($_REQUEST['MNT_SIGNATURE'] == $mnt_sugnature)
 		{
 			// Установим статус оплачен
-			$simpla->orders->update_order(intval($order->id), array('paid'=>1));
+			$simpla->orders->update_order((int)($order->id), array('paid'=>1));
 
 			// Спишем товары
-			$simpla->orders->close(intval($order->id));
-			$simpla->notify->email_order_user(intval($order->id));
-			$simpla->notify->email_order_admin(intval($order->id));
+			$simpla->orders->close((int)($order->id));
+			$simpla->notify->email_order_user((int)($order->id));
+			$simpla->notify->email_order_admin((int)($order->id));
 
 			die('SUCCESS');
 		} 

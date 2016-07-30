@@ -43,10 +43,10 @@ class Products extends Simpla
 		$order = 'p.position DESC';
 
 		if(isset($filter['limit']))
-			$limit = max(1, intval($filter['limit']));
+			$limit = max(1, (int)($filter['limit']));
 
 		if(isset($filter['page']))
-			$page = max(1, intval($filter['page']));
+			$page = max(1, (int)($filter['page']));
 
 		$sql_limit = $this->db->placehold(' LIMIT ?, ? ', ($page-1)*$limit, $limit);
 
@@ -63,16 +63,16 @@ class Products extends Simpla
 			$brand_id_filter = $this->db->placehold('AND p.brand_id in(?@)', (array)$filter['brand_id']);
 
 		if(isset($filter['featured']))
-			$is_featured_filter = $this->db->placehold('AND p.featured=?', intval($filter['featured']));
+			$is_featured_filter = $this->db->placehold('AND p.featured=?', (int)($filter['featured']));
 
 		if(isset($filter['discounted']))
-			$discounted_filter = $this->db->placehold('AND (SELECT 1 FROM __variants pv WHERE pv.product_id=p.id AND pv.compare_price>0 LIMIT 1) = ?', intval($filter['discounted']));
+			$discounted_filter = $this->db->placehold('AND (SELECT 1 FROM __variants pv WHERE pv.product_id=p.id AND pv.compare_price>0 LIMIT 1) = ?', (int)($filter['discounted']));
 
 		if(isset($filter['in_stock']))
-			$in_stock_filter = $this->db->placehold('AND (SELECT count(*)>0 FROM __variants pv WHERE pv.product_id=p.id AND pv.price>0 AND (pv.stock IS NULL OR pv.stock>0) LIMIT 1) = ?', intval($filter['in_stock']));
+			$in_stock_filter = $this->db->placehold('AND (SELECT count(*)>0 FROM __variants pv WHERE pv.product_id=p.id AND pv.price>0 AND (pv.stock IS NULL OR pv.stock>0) LIMIT 1) = ?', (int)($filter['in_stock']));
 
 		if(isset($filter['visible']))
-			$visible_filter = $this->db->placehold('AND p.visible=?', intval($filter['visible']));
+			$visible_filter = $this->db->placehold('AND p.visible=?', (int)($filter['visible']));
 
  		if(!empty($filter['sort']))
 			switch ($filter['sort'])
@@ -186,16 +186,16 @@ class Products extends Simpla
 		}
 
 		if(isset($filter['featured']))
-			$is_featured_filter = $this->db->placehold('AND p.featured=?', intval($filter['featured']));
+			$is_featured_filter = $this->db->placehold('AND p.featured=?', (int)$filter['featured']);
 
 		if(isset($filter['in_stock']))
-			$in_stock_filter = $this->db->placehold('AND (SELECT count(*)>0 FROM __variants pv WHERE pv.product_id=p.id AND pv.price>0 AND (pv.stock IS NULL OR pv.stock>0) LIMIT 1) = ?', intval($filter['in_stock']));
+			$in_stock_filter = $this->db->placehold('AND (SELECT count(*)>0 FROM __variants pv WHERE pv.product_id=p.id AND pv.price>0 AND (pv.stock IS NULL OR pv.stock>0) LIMIT 1) = ?', (int)($filter['in_stock']));
 
 		if(isset($filter['discounted']))
-			$discounted_filter = $this->db->placehold('AND (SELECT 1 FROM __variants pv WHERE pv.product_id=p.id AND pv.compare_price>0 LIMIT 1) = ?', intval($filter['discounted']));
+			$discounted_filter = $this->db->placehold('AND (SELECT 1 FROM __variants pv WHERE pv.product_id=p.id AND pv.compare_price>0 LIMIT 1) = ?', (int)($filter['discounted']));
 
 		if(isset($filter['visible']))
-			$visible_filter = $this->db->placehold('AND p.visible=?', intval($filter['visible']));
+			$visible_filter = $this->db->placehold('AND p.visible=?', (int)($filter['visible']));
 		
 		
 		if(!empty($filter['features']) && !empty($filter['features']))
@@ -329,7 +329,7 @@ class Products extends Simpla
 				$this->delete_related_product($id, $r->related_id);
 			
 			// Удаляем товар из связанных с другими
-			$query = $this->db->placehold("DELETE FROM __related_products WHERE related_id=?", intval($id));
+			$query = $this->db->placehold('DELETE FROM __related_products WHERE related_id=?', (int)$id);
 			$this->db->query($query);
 			
 			// Удаляем отзывы
@@ -338,10 +338,10 @@ class Products extends Simpla
 				$this->comments->delete_comment($c->id);
 			
 			// Удаляем из покупок
-			$this->db->query('UPDATE __purchases SET product_id=NULL WHERE product_id=?', intval($id));
+			$this->db->query('UPDATE __purchases SET product_id=NULL WHERE product_id=?', (int)$id);
 			
 			// Удаляем товар
-			$query = $this->db->placehold("DELETE FROM __products WHERE id=? LIMIT 1", intval($id));
+			$query = $this->db->placehold("DELETE FROM __products WHERE id=? LIMIT 1", (int)$id);
 			if($this->db->query($query))
 				return true;			
 		}
@@ -431,7 +431,7 @@ class Products extends Simpla
 	// Удаление связанного товара
 	public function delete_related_product($product_id, $related_id)
 	{
-		$query = $this->db->placehold("DELETE FROM __related_products WHERE product_id=? AND related_id=? LIMIT 1", intval($product_id), intval($related_id));
+		$query = $this->db->placehold("DELETE FROM __related_products WHERE product_id=? AND related_id=? LIMIT 1", (int)($product_id), (int)($related_id));
 		$this->db->query($query);
 	}
 	

@@ -28,7 +28,7 @@ $order_id = $_REQUEST['ext_transact'];
 // Выберем заказ из базы
 ////////////////////////////////////////////////
 
-$order = $simpla->orders->get_order(intval($order_id));
+$order = $simpla->orders->get_order((int)($order_id));
 if(empty($order))
 	die('Оплачиваемый заказ не найден');
  
@@ -36,7 +36,7 @@ if(empty($order))
 ////////////////////////////////////////////////
 // Выбираем из базы соответствующий метод оплаты
 ////////////////////////////////////////////////
-$method = $simpla->payment->get_payment_method(intval($order->payment_method_id));
+$method = $simpla->payment->get_payment_method((int)($order->payment_method_id));
 if(empty($method))
 	die("Неизвестный метод оплаты");
  
@@ -105,9 +105,9 @@ if(floatval($order_amount) !== floatval($_REQUEST['sum'])){
 ////////////////////////////////////
 // Проверка наличия товара
 ////////////////////////////////////
-$purchases = $simpla->orders->get_purchases(array('order_id'=>intval($order->id)));
+$purchases = $simpla->orders->get_purchases(array('order_id'=>(int)($order->id)));
 foreach($purchases as $purchase){
-	$variant = $simpla->variants->get_variant(intval($purchase->variant_id));
+	$variant = $simpla->variants->get_variant((int)($purchase->variant_id));
 	if(empty($variant) || (!$variant->infinity && $variant->stock < $purchase->amount)){
 		if($_REQUEST['check']=="1"){
 			die("Нехватка товара $purchase->product_name $purchase->variant_name");
@@ -123,10 +123,10 @@ if($_REQUEST['check']=="1"){
 	die('ok');
 }else{
 	if($_REQUEST['result']=="0"){
-		$simpla->orders->update_order(intval($order->id), array('paid'=>1));
-		$simpla->orders->close(intval($order->id));
-		$simpla->notify->email_order_user(intval($order->id));
-		$simpla->notify->email_order_admin(intval($order->id));
+		$simpla->orders->update_order((int)($order->id), array('paid'=>1));
+		$simpla->orders->close((int)($order->id));
+		$simpla->notify->email_order_user((int)($order->id));
+		$simpla->notify->email_order_admin((int)($order->id));
 		$datetime = new DateTime();
 		$performedDatetime = $datetime->format('c');
 	}

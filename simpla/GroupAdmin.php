@@ -22,13 +22,13 @@ class GroupAdmin extends Simpla
 	    		$group->id = $this->users->update_group($group->id, $group);
   				$this->design->assign('message_success', 'updated');
   			}
-	    	$group = $this->users->get_group(intval($group->id));
+	    	$group = $this->users->get_group((int)($group->id));
 		}
 		else
 		{
 			$id = $this->request->get('id', 'integer');
 			if(!empty($id))
-				$group = $this->users->get_group(intval($id));			
+				$group = $this->users->get_group((int)($id));
 		}	
 
 		if(!empty($group))

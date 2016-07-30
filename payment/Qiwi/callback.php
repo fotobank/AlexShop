@@ -21,14 +21,14 @@ function updateBill($login, $password, $txn, $status)
 	$simpla = new Simpla();
 
 	// Выбираем оплачиваемый заказ
-	$order = $simpla->orders->get_order(intval($txn));
+	$order = $simpla->orders->get_order((int)($txn));
 	
 	// 210 = Счет не найден
 	if(empty($order))
 		return new soapval('updateBillResult', 'xsd:integer', 210); 
 		
 	// Выбираем из базы соответствующий метод оплаты
-	$method = $simpla->payment->get_payment_method(intval($order->payment_method_id));
+	$method = $simpla->payment->get_payment_method((int)($order->payment_method_id));
 	if(empty($method))
 		return new soapval('updateBillResult', 'xsd:integer', 210);
 	// Настройки способа оплаты	
@@ -50,10 +50,10 @@ function updateBill($login, $password, $txn, $status)
 		return new soapval('updateBillResult', 'xsd:integer', 215);
 		
 	// Проверка наличия товара
-	$purchases = $simpla->orders->get_purchases(array('order_id'=>intval($order->id)));
+	$purchases = $simpla->orders->get_purchases(array('order_id'=>(int)($order->id)));
 	foreach($purchases as $purchase)
 	{
-		$variant = $simpla->variants->get_variant(intval($purchase->variant_id));
+		$variant = $simpla->variants->get_variant((int)($purchase->variant_id));
 		if(empty($variant) || (!$variant->infinity && $variant->stock < $purchase->amount))
 		{
 			// 300 = Неизвестная ошибка
@@ -62,12 +62,12 @@ function updateBill($login, $password, $txn, $status)
 	}
 	
 	// Установим статус оплачен
-	$simpla->orders->update_order(intval($order->id), array('paid'=>1));
+	$simpla->orders->update_order((int)($order->id), array('paid'=>1));
 	
 	// Спишем товары  
-	$simpla->orders->close(intval($order->id));
-	$simpla->notify->email_order_user(intval($order->id));
-	$simpla->notify->email_order_admin(intval($order->id));
+	$simpla->orders->close((int)($order->id));
+	$simpla->notify->email_order_user((int)($order->id));
+	$simpla->notify->email_order_admin((int)($order->id));
 
 	// Успешное завершение
 	return new soapval('updateBillResult', 'xsd:integer', 0); 

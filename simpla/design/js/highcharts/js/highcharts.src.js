@@ -12248,7 +12248,7 @@ Point.prototype = {
 	applyOptions: function (options, x) {
 		var point = this,
 			series = point.series,
-			pointValKey = series.pointValKey;
+			po(int)Key = series.po(int)Key;
 
 		options = Point.prototype.optionsToObject.call(this, options);
 
@@ -12257,8 +12257,8 @@ Point.prototype = {
 		point.options = point.options ? extend(point.options, options) : options;
 
 		// For higher dimension series types. For instance, for ranges, point.y is mapped to point.low.
-		if (pointValKey) {
-			point.y = point[pointValKey];
+		if (po(int)Key) {
+			point.y = point[po(int)Key];
 		}
 
 		// If no x is set by now, get auto incremented value. All points must have an

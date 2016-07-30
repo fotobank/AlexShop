@@ -112,7 +112,7 @@ class Money extends Simpla
 	{
 		if(!empty($id))
 		{
-			$query = $this->db->placehold("DELETE FROM __currencies WHERE id=? LIMIT 1", intval($id));
+			$query = $this->db->placehold("DELETE FROM __currencies WHERE id=? LIMIT 1", (int)($id));
 			$this->db->query($query);
 		}
 		$this->init_currencies();		

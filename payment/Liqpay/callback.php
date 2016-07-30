@@ -22,7 +22,7 @@ $amount				= $simpla->request->post('amount');
 $currency			= $simpla->request->post('currency');
 $description		= $simpla->request->post('description');
 $liqpay_order_id	= $simpla->request->post('order_id');
-$order_id			= intval(substr($liqpay_order_id, 0, strpos($liqpay_order_id, '-')));
+$order_id			= (int)(substr($liqpay_order_id, 0, strpos($liqpay_order_id, '-')));
 $type				= $simpla->request->post('type');
 $signature			= $simpla->request->post('signature');
 $status				= $simpla->request->post('status');
@@ -38,19 +38,19 @@ if($type !== 'buy')
 ////////////////////////////////////////////////
 // Выберем заказ из базы
 ////////////////////////////////////////////////
-$order = $simpla->orders->get_order(intval($order_id));
+$order = $simpla->orders->get_order((int)($order_id));
 if(empty($order))
 	die('Оплачиваемый заказ не найден');
  
 ////////////////////////////////////////////////
 // Выбираем из базы соответствующий метод оплаты
 ////////////////////////////////////////////////
-$method = $simpla->payment->get_payment_method(intval($order->payment_method_id));
+$method = $simpla->payment->get_payment_method((int)($order->payment_method_id));
 if(empty($method))
 	die("Неизвестный метод оплаты");
 	
 $settings = unserialize($method->settings);
-$payment_currency = $simpla->money->get_currency(intval($method->currency_id));
+$payment_currency = $simpla->money->get_currency((int)($method->currency_id));
 
 // Валюта должна совпадать
 if($currency !== $payment_currency->code)
@@ -69,14 +69,14 @@ if($amount != round($simpla->money->convert($order->total_price, $method->curren
 	die("incorrect price");
 	       
 // Установим статус оплачен
-$simpla->orders->update_order(intval($order->id), array('paid'=>1));
+$simpla->orders->update_order((int)($order->id), array('paid'=>1));
 
 // Отправим уведомление на email
-$simpla->notify->email_order_user(intval($order->id));
-$simpla->notify->email_order_admin(intval($order->id));
+$simpla->notify->email_order_user((int)($order->id));
+$simpla->notify->email_order_admin((int)($order->id));
 
 // Спишем товары  
-$simpla->orders->close(intval($order->id));
+$simpla->orders->close((int)($order->id));
 
 // Перенаправим пользователя на страницу заказа
 // header('Location: '.$simpla->config->root_url.'/order/'.$order->url);

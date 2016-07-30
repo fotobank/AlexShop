@@ -25,7 +25,7 @@ class Brands extends Simpla
 		$category_id_filter = '';
 		$visible_filter = '';
 		if(isset($filter['visible']))
-			$visible_filter = $this->db->placehold('AND p.visible=?', intval($filter['visible']));
+			$visible_filter = $this->db->placehold('AND p.visible=?', (int)($filter['visible']));
 		
 		if(!empty($filter['category_id']))
 			$category_id_filter = $this->db->placehold("LEFT JOIN __products p ON p.brand_id=b.id LEFT JOIN __products_categories pc ON p.id = pc.product_id WHERE pc.category_id in(?@) $visible_filter", (array)$filter['category_id']);
@@ -84,7 +84,7 @@ class Brands extends Simpla
 	*/		
 	public function update_brand($id, $brand)
 	{
-		$query = $this->db->placehold("UPDATE __brands SET ?% WHERE id=? LIMIT 1", $brand, intval($id));
+		$query = $this->db->placehold("UPDATE __brands SET ?% WHERE id=? LIMIT 1", $brand, (int)($id));
 		$this->db->query($query);
 		return $id;
 	}
@@ -115,7 +115,7 @@ class Brands extends Simpla
 	*/
 	public function delete_image($brand_id)
 	{
-		$query = $this->db->placehold("SELECT image FROM __brands WHERE id=?", intval($brand_id));
+		$query = $this->db->placehold("SELECT image FROM __brands WHERE id=?", (int)($brand_id));
 		$this->db->query($query);
 		$filename = $this->db->result('image');
 		if(!empty($filename))

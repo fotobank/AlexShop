@@ -67,7 +67,7 @@ class Variants extends Simpla
 	
 	public function update_variant($id, $variant)
 	{
-		$query = $this->db->placehold("UPDATE __variants SET ?% WHERE id=? LIMIT 1", $variant, intval($id));
+		$query = $this->db->placehold("UPDATE __variants SET ?% WHERE id=? LIMIT 1", $variant, (int)($id));
 		$this->db->query($query);
 		return $id;
 	}
@@ -84,9 +84,9 @@ class Variants extends Simpla
 		if(!empty($id))
 		{
 			$this->delete_attachment($id);
-			$query = $this->db->placehold("DELETE FROM __variants WHERE id = ? LIMIT 1", intval($id));
+			$query = $this->db->placehold("DELETE FROM __variants WHERE id = ? LIMIT 1", (int)($id));
 			$this->db->query($query);
-			$this->db->query('UPDATE __purchases SET variant_id=NULL WHERE variant_id=?', intval($id));
+			$this->db->query('UPDATE __purchases SET variant_id=NULL WHERE variant_id=?', (int)($id));
 		}
 	}
 	

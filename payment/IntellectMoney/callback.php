@@ -39,14 +39,14 @@ $hash = from_request('hash');
 ////////////////////////////////////////////////
 // Выберем заказ из базы
 ////////////////////////////////////////////////
-$order = $simpla->orders->get_order(intval($orderId));
+$order = $simpla->orders->get_order((int)($orderId));
 if(empty($order))
 	die('Оплачиваемый заказ не найден');
 	
 ////////////////////////////////////////////////
 // Выбираем из базы соответствующий метод оплаты
 ////////////////////////////////////////////////
-$method = $simpla->payment->get_payment_method(intval($order->payment_method_id));
+$method = $simpla->payment->get_payment_method((int)($order->payment_method_id));
 if(empty($method))
 	die("Неизвестный метод оплаты");
  
@@ -87,12 +87,12 @@ else{
 
 			   
 		// Установим статус оплачен
-		$simpla->orders->update_order(intval($order->id), array('paid'=>1));
+		$simpla->orders->update_order((int)($order->id), array('paid'=>1));
 
 		// Спишем товары  
-		$simpla->orders->close(intval($order->id));
-		$simpla->notify->email_order_user(intval($order->id));
-		$simpla->notify->email_order_admin(intval($order->id));
+		$simpla->orders->close((int)($order->id));
+		$simpla->notify->email_order_user((int)($order->id));
+		$simpla->notify->email_order_admin((int)($order->id));
 	}
 /*---------------------------------------------*/
 }	

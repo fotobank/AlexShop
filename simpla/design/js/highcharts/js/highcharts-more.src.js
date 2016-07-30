@@ -675,7 +675,7 @@ seriesTypes.arearange = extendClass(seriesTypes.area, {
 	toYData: function (point) {
 		return [point.low, point.high];
 	},
-	pointValKey: 'low',
+	po(int)Key: 'low',
 	
 	/**
 	 * Extend getSegments to force null points if the higher value is null. #1703.
@@ -1214,7 +1214,7 @@ seriesTypes.boxplot = extendClass(seriesTypes.column, {
 	toYData: function (point) { // return a plain array for speedy calculation
 		return [point.low, point.q1, point.median, point.q3, point.high];
 	},
-	pointValKey: 'high', // defines the top of the tracker
+	po(int)Key: 'high', // defines the top of the tracker
 	
 	/**
 	 * One-to-one mapping from options to SVG attributes
@@ -1469,7 +1469,7 @@ seriesTypes.errorbar = extendClass(seriesTypes.boxplot, {
 	toYData: function (point) { // return a plain array for speedy calculation
 		return [point.low, point.high];
 	},
-	pointValKey: 'high', // defines the top of the tracker
+	po(int)Key: 'high', // defines the top of the tracker
 	doQuartiles: false,
 	drawDataLabels: seriesTypes.arearange ? seriesTypes.arearange.prototype.drawDataLabels : noop,
 
@@ -1507,7 +1507,7 @@ seriesTypes.waterfall = extendClass(seriesTypes.column, {
 
 	pointArrayMap: ['low', 'y'],
 
-	pointValKey: 'y',
+	po(int)Key: 'y',
 
 	/**
 	 * Init waterfall series, force stacking

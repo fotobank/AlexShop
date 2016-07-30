@@ -22,10 +22,10 @@ class Paypal extends Simpla
 			$button_text = 'Checkout with Paypal';
 		
 		$order = $this->orders->get_order((int)$order_id);
-		$purchases = $this->orders->get_purchases(array('order_id'=>intval($order->id)));
+		$purchases = $this->orders->get_purchases(array('order_id'=>(int)($order->id)));
 
 		$payment_method = $this->payment->get_payment_method($order->payment_method_id);
-		$currency = $this->money->get_currency(intval($payment_method->currency_id));
+		$currency = $this->money->get_currency((int)($payment_method->currency_id));
 		$payment_settings = $this->payment->get_payment_settings($payment_method->id);
 			
 		if($payment_settings['mode'] == 'sandbox') $paypal_url = "https://www.sandbox.paypal.com/cgi-bin/webscr";

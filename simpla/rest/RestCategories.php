@@ -43,7 +43,7 @@ class RestBlog extends Rest
 		
 		$ids = array();
 		foreach(explode(',', $this->request->get('id')) as $id)
-			if(($id = intval($id))>0)
+			if(($id = (int)($id))>0)
 				$ids[] = $id;
 		
 		$filter = array();
@@ -95,7 +95,7 @@ class RestBlog extends Rest
 					if(isset($products[$pc->product_id]))
 					{
 						$products[$pc->product_id]["categories"][$pc->category_id] = $pc;
-						$products[$pc->product_id]["categories"][$pc->category_id]->category = $this->categories->get_category(intval($pc->category_id));
+						$products[$pc->product_id]["categories"][$pc->category_id]->category = $this->categories->get_category((int)($pc->category_id));
 					}
 				}
 			}				

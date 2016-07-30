@@ -42,7 +42,7 @@ class OrdersAdmin extends Simpla
 				{
 					foreach($ids as $id)
 					{
-						$o = $this->orders->get_order(intval($id));
+						$o = $this->orders->get_order((int)($id));
 						if($o->status<3)
 						{
 							$this->orders->update_order($id, array('status'=>3));
@@ -57,7 +57,7 @@ class OrdersAdmin extends Simpla
 				{
 					foreach($ids as $id)
 					{
-						if($this->orders->open(intval($id)))
+						if($this->orders->open((int)($id)))
 							$this->orders->update_order($id, array('status'=>0));	
 					}
 					break;
@@ -66,7 +66,7 @@ class OrdersAdmin extends Simpla
 				{
 					foreach($ids as $id)
 					{
-						if(!$this->orders->close(intval($id)))
+						if(!$this->orders->close((int)($id)))
 							$this->design->assign('message_error', 'error_closing');
 						else
 							$this->orders->update_order($id, array('status'=>1));	
@@ -77,7 +77,7 @@ class OrdersAdmin extends Simpla
 				{
 					foreach($ids as $id)
 					{
-						if(!$this->orders->close(intval($id)))
+						if(!$this->orders->close((int)($id)))
 							$this->design->assign('message_error', 'error_closing');
 						else
 							$this->orders->update_order($id, array('status'=>2));	
@@ -86,7 +86,7 @@ class OrdersAdmin extends Simpla
 				}
 				case(preg_match('/^set_label_([0-9]+)/', $this->request->post('action'), $a) ? true : false):
 				{
-					$l_id = intval($a[1]);
+					$l_id = (int)($a[1]);
 					if($l_id>0)
 					foreach($ids as $id)
 					{
@@ -96,7 +96,7 @@ class OrdersAdmin extends Simpla
 				}
 				case(preg_match('/^unset_label_([0-9]+)/', $this->request->post('action'), $a) ? true : false):
 				{
-					$l_id = intval($a[1]);
+					$l_id = (int)($a[1]);
 					if($l_id>0)
 					foreach($ids as $id)
 					{

@@ -25,7 +25,7 @@ class Pages extends Simpla
 		if(gettype($id) == 'string')
 			$where = $this->db->placehold(' WHERE url=? ', $id);
 		else
-			$where = $this->db->placehold(' WHERE id=? ', intval($id));
+			$where = $this->db->placehold(' WHERE id=? ', (int)($id));
 		
 		$query = "SELECT id, url, header, name, meta_title, meta_description, meta_keywords, body, menu_id, position, visible
 		          FROM __pages $where LIMIT 1";
@@ -50,7 +50,7 @@ class Pages extends Simpla
 			$menu_filter = $this->db->placehold('AND menu_id in (?@)', (array)$filter['menu_id']);
 
 		if(isset($filter['visible']))
-			$visible_filter = $this->db->placehold('AND visible = ?', intval($filter['visible']));
+			$visible_filter = $this->db->placehold('AND visible = ?', (int)($filter['visible']));
 		
 		$query = "SELECT id, url, header, name, meta_title, meta_description, meta_keywords, body, menu_id, position, visible
 		          FROM __pages WHERE 1 $menu_filter $visible_filter ORDER BY position";
@@ -101,7 +101,7 @@ class Pages extends Simpla
 	{
 		if(!empty($id))
 		{
-			$query = $this->db->placehold("DELETE FROM __pages WHERE id=? LIMIT 1", intval($id));
+			$query = $this->db->placehold("DELETE FROM __pages WHERE id=? LIMIT 1", (int)($id));
 			if($this->db->query($query))
 				return true;
 		}
@@ -131,7 +131,7 @@ class Pages extends Simpla
 	*/
 	public function get_menu($menu_id)
 	{	
-		$query = $this->db->placehold("SELECT * FROM __menu WHERE id=? LIMIT 1", intval($menu_id));
+		$query = $this->db->placehold("SELECT * FROM __menu WHERE id=? LIMIT 1", (int)($menu_id));
 		$this->db->query($query);
 		return $this->db->result();
 	}

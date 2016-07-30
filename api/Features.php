@@ -230,7 +230,6 @@ class Features extends Simpla
 				$features_filter .= $this->db->placehold('AND (po.feature_id=? OR po.product_id in (SELECT product_id FROM __options WHERE feature_id=? AND value=? )) ', $feature, $feature, $value);
 			}
 
-
 		$query = $this->db->placehold("
             SELECT po.product_id, po.feature_id, po.value, count(po.product_id) as count
 		    FROM __options po $visible_filter $category_id_filter

@@ -55,27 +55,27 @@ if($_POST['ok_txn_kind'] !== 'payment_link')
 if($_POST['ok_txn_status'] !== 'completed')
 	my_exit('Invalid ok_txn_status');
 
-if(intval($_POST['ok_ipn_test']) !== 0)
+if((int)($_POST['ok_ipn_test']) !== 0)
 	my_exit('Test ipn');
 
-$order_id = intval($_POST['ok_invoice']);
+$order_id = (int)($_POST['ok_invoice']);
 
 ////////////////////////////////////////////////
 // Выберем заказ из базы
 ////////////////////////////////////////////////
-$order = $simpla->orders->get_order(intval($order_id));
+$order = $simpla->orders->get_order((int)($order_id));
 if(empty($order))
 	my_exit('Оплачиваемый заказ не найден');
  
 ////////////////////////////////////////////////
 // Выбираем из базы соответствующий метод оплаты
 ////////////////////////////////////////////////
-$method = $simpla->payment->get_payment_method(intval($order->payment_method_id));
+$method = $simpla->payment->get_payment_method((int)($order->payment_method_id));
 if(empty($method))
 	my_exit("Неизвестный метод оплаты");
 	
 $settings = unserialize($method->settings);
-$payment_currency = $simpla->money->get_currency(intval($method->currency_id));
+$payment_currency = $simpla->money->get_currency((int)($method->currency_id));
 
 // Проверяем получателя платежа
 if($_POST['ok_reciever'] != $settings['okpay_receiver'])
@@ -94,14 +94,14 @@ if($_POST['ok_item_1_price'] != round($simpla->money->convert($order->total_pric
 	
 	       
 // Установим статус оплачен
-$simpla->orders->update_order(intval($order->id), array('paid'=>1));
+$simpla->orders->update_order((int)($order->id), array('paid'=>1));
 
 // Отправим уведомление на email
-$simpla->notify->email_order_user(intval($order->id));
-$simpla->notify->email_order_admin(intval($order->id));
+$simpla->notify->email_order_user((int)($order->id));
+$simpla->notify->email_order_admin((int)($order->id));
 
 // Спишем товары  
-$simpla->orders->close(intval($order->id));
+$simpla->orders->close((int)($order->id));
 
 // Перенаправим пользователя на страницу заказа
 header('Location: '.$simpla->config->root_url.'/order/'.$order->url);

@@ -7,7 +7,7 @@ $keyword = str_replace(' ', '+', $keyword);
 
 $start=0;
 if(isset($_GET['start']))
-        $start = intval($_GET['start']);
+        $start = (int)($_GET['start']);
 
 $url = 'http://ajax.googleapis.com/ajax/services/search/images?v=1.0&q='.urlencode($keyword).'&start='.$start.'&rsz=8';
 if($use_curl && function_exists('curl_init'))

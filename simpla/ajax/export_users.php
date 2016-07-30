@@ -5,13 +5,13 @@ require_once('../../api/Simpla.php');
 class ExportAjax extends Simpla
 {	
 	private $columns_names = array(
-			'name'=>             'Имя',
+			'name'=>             'пїЅпїЅпїЅ',
 			'email'=>            'Email',
-			'group_name'=>            'Группа',
-			'discount'=>         'Скидка',
-			'enabled'=>          'Активен',
-			'created'=>          'Дата',
-			'last_ip'=>          'Последний IP'
+			'group_name'=>            'пїЅпїЅпїЅпїЅпїЅпїЅ',
+			'discount'=>         'пїЅпїЅпїЅпїЅпїЅпїЅ',
+			'enabled'=>          'пїЅпїЅпїЅпїЅпїЅпїЅпїЅ',
+			'created'=>          'пїЅпїЅпїЅпїЅ',
+			'last_ip'=>          'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ IP'
 			);
 			
 	private $column_delimiter = ';';
@@ -24,24 +24,24 @@ class ExportAjax extends Simpla
 		if(!$this->managers->access('users'))
 			return false;
 	
-		// Эксель кушает только 1251
+		// пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ 1251
 		setlocale(LC_ALL, 'ru_RU.1251');
 		$this->db->query('SET NAMES cp1251');
 	
-		// Страница, которую экспортируем
+		// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 		$page = $this->request->get('page');
 		if(empty($page) || $page==1)
 		{
 			$page = 1;
-			// Если начали сначала - удалим старый файл экспорта
+			// пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ - пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 			if(is_writable($this->export_files_dir.$this->filename))
 				unlink($this->export_files_dir.$this->filename);
 		}
 		
-		// Открываем файл экспорта на добавление
+		// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 		$f = fopen($this->export_files_dir.$this->filename, 'ab');
 				
-		// Если начали сначала - добавим в первую строку названия колонок
+		// пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ - пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 		if($page == 1)
 		{
 			fputcsv($f, $this->columns_names, $this->column_delimiter);
@@ -51,11 +51,11 @@ class ExportAjax extends Simpla
 		$filter['page'] = $page;
 		$filter['limit'] = $this->users_count;
 		if($this->request->get('group_id'))
-			$filter['group_id'] = intval($this->request->get('group_id'));
+			$filter['group_id'] = (int)($this->request->get('group_id'));
 		$filter['sort'] = $this->request->get('sort');
 		$filter['keyword'] = $this->request->get('keyword');
 		
-		// Выбираем пользователей
+		// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 		$users = array();
  		foreach($this->users->get_users($filter) as $u)
  		{

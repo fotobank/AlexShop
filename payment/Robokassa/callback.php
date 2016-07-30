@@ -26,7 +26,7 @@ $amount = $_POST['OutSum'];
 
 // Внутренний номер покупки продавца
 // В этом поле передается id заказа в нашем магазине.
-$order_id = intval($_POST['InvId']);
+$order_id = (int)($_POST['InvId']);
 
 // Контрольная подпись
 $crc = strtoupper($_POST['SignatureValue']);
@@ -34,7 +34,7 @@ $crc = strtoupper($_POST['SignatureValue']);
 ////////////////////////////////////////////////
 // Выберем заказ из базы
 ////////////////////////////////////////////////
-$order = $simpla->orders->get_order(intval($order_id));
+$order = $simpla->orders->get_order((int)($order_id));
 if(empty($order))
 	die('Оплачиваемый заказ не найден');
  
@@ -46,7 +46,7 @@ if($order->paid)
 ////////////////////////////////////////////////
 // Выбираем из базы соответствующий метод оплаты
 ////////////////////////////////////////////////
-$method = $simpla->payment->get_payment_method(intval($order->payment_method_id));
+$method = $simpla->payment->get_payment_method((int)($order->payment_method_id));
 if(empty($method))
 	die("Неизвестный метод оплаты");
  
@@ -65,10 +65,10 @@ if($amount != $simpla->money->convert($order->total_price, $method->currency_id,
 ////////////////////////////////////
 // Проверка наличия товара
 ////////////////////////////////////
-$purchases = $simpla->orders->get_purchases(array('order_id'=>intval($order->id)));
+$purchases = $simpla->orders->get_purchases(array('order_id'=>(int)($order->id)));
 foreach($purchases as $purchase)
 {
-	$variant = $simpla->variants->get_variant(intval($purchase->variant_id));
+	$variant = $simpla->variants->get_variant((int)($purchase->variant_id));
 	if(empty($variant) || (!$variant->infinity && $variant->stock < $purchase->amount))
 	{
 		die("Нехватка товара $purchase->product_name $purchase->variant_name");
@@ -76,12 +76,12 @@ foreach($purchases as $purchase)
 }
        
 // Установим статус оплачен
-$simpla->orders->update_order(intval($order->id), array('paid'=>1));
+$simpla->orders->update_order((int)($order->id), array('paid'=>1));
 
 // Спишем товары  
-$simpla->orders->close(intval($order->id));
-$simpla->notify->email_order_user(intval($order->id));
-$simpla->notify->email_order_admin(intval($order->id));
+$simpla->orders->close((int)($order->id));
+$simpla->notify->email_order_user((int)($order->id));
+$simpla->notify->email_order_admin((int)($order->id));
 
 
 die("OK".$order_id."\n");

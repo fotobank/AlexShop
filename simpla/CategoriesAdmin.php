@@ -17,18 +17,18 @@ class CategoriesAdmin extends Simpla
 			    case 'disable':
 			    {
 			    	foreach($ids as $id)
-						$this->categories->update_category($id, array('visible'=>0));    
+						$this->categories->update_category($id, array('visible'=>0));
 					break;
 			    }
 			    case 'enable':
 			    {
 			    	foreach($ids as $id)
-						$this->categories->update_category($id, array('visible'=>1));    
+						$this->categories->update_category($id, array('visible'=>1));
 			        break;
 			    }
 			    case 'delete':
 			    {
-					$this->categories->delete_category($ids);    
+					$this->categories->delete_category($ids);
 			        break;
 			    }
 			}		
@@ -38,7 +38,7 @@ class CategoriesAdmin extends Simpla
 	 		$ids = array_keys($positions);
 			sort($positions);
 			foreach($positions as $i=>$position)
-				$this->categories->update_category($ids[$i], array('position'=>$position)); 
+				$this->categories->update_category($ids[$i], array('position'=>$position));
 
 		}  
   

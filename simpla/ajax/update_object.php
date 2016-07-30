@@ -13,7 +13,7 @@ if(!$simpla->request->check_session())
 	exit();
 }
 
-$id = intval($simpla->request->post('id'));
+$id = (int)($simpla->request->post('id'));
 $object = $simpla->request->post('object');
 $values = $simpla->request->post('values');
 

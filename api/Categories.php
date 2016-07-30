@@ -69,8 +69,8 @@ class Categories extends Simpla
 	{
 		if(!isset($this->all_categories))
 			$this->init_categories();
-		if(is_int($id) && array_key_exists(intval($id), $this->all_categories))
-			return $category = $this->all_categories[intval($id)];
+		if(is_int($id) && array_key_exists((int)($id), $this->all_categories))
+			return $category = $this->all_categories[(int)($id)];
 		elseif(is_string($id))
 			foreach ($this->all_categories as $category)
 				if ($category->url == $id)
@@ -109,11 +109,11 @@ class Categories extends Simpla
 	// Изменение категории
 	public function update_category($id, $category)
 	{
-		$query = $this->db->placehold("UPDATE __categories SET ?% WHERE id=? LIMIT 1", $category, intval($id));
+		$query = $this->db->placehold("UPDATE __categories SET ?% WHERE id=? LIMIT 1", $category, (int)($id));
 		$this->db->query($query);
 		unset($this->categories_tree);			
 		unset($this->all_categories);	
-		return intval($id);
+		return (int)($id);
 	}
 	
 	// Удаление категории
@@ -122,7 +122,7 @@ class Categories extends Simpla
 		$ids = (array) $ids;
 		foreach($ids as $id)
 		{
-			if($category = $this->get_category(intval($id)))
+			if($category = $this->get_category((int)($id)))
 			$this->delete_image($category->children);
 			if(!empty($category->children))
 			{
@@ -147,7 +147,7 @@ class Categories extends Simpla
 	// Удалить категорию заданного товара
 	public function delete_product_category($product_id, $category_id)
 	{
-		$query = $this->db->placehold("DELETE FROM __products_categories WHERE product_id=? AND category_id=? LIMIT 1", intval($product_id), intval($category_id));
+		$query = $this->db->placehold("DELETE FROM __products_categories WHERE product_id=? AND category_id=? LIMIT 1", (int)($product_id), (int)($category_id));
 		$this->db->query($query);
 	}
 	

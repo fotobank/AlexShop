@@ -20,12 +20,12 @@ $simpla = new Simpla();
 
 
 // Get the order
-$order = $simpla->orders->get_order(intval($simpla->request->post('invoice')));
+$order = $simpla->orders->get_order((int)($simpla->request->post('invoice')));
 if(empty($order))
 	die('Order not found');
  
 // Get payment method from this order
-$method = $simpla->payment->get_payment_method(intval($order->payment_method_id));
+$method = $simpla->payment->get_payment_method((int)($order->payment_method_id));
 if(empty($method))
 	die("Unknown payment method");
 
@@ -74,7 +74,7 @@ if($order->paid)
 $total_price = 0;
 
 // Get order purchases
-$purchases = $simpla->orders->get_purchases(array('order_id'=>intval($order->id)));
+$purchases = $simpla->orders->get_purchases(array('order_id'=>(int)($order->id)));
 foreach($purchases as $purchase)
 {			
 	$price = $simpla->money->convert($purchase->price, $method->currency_id, false);
@@ -98,12 +98,12 @@ if($total_price != $simpla->request->post('mc_gross'))
 	die("Incorrect total price (".$total_price."!=".$simpla->request->post('mc_gross').")");
        
 // Set order status paid
-$simpla->orders->update_order(intval($order->id), array('paid'=>1));
+$simpla->orders->update_order((int)($order->id), array('paid'=>1));
 
 // Write off products
-$simpla->orders->close(intval($order->id));
-$simpla->notify->email_order_user(intval($order->id));
-$simpla->notify->email_order_admin(intval($order->id));
+$simpla->orders->close((int)($order->id));
+$simpla->notify->email_order_user((int)($order->id));
+$simpla->notify->email_order_admin((int)($order->id));
 
 
 function logg($str)

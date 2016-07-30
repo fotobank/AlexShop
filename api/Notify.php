@@ -26,7 +26,7 @@ class Notify extends Simpla
 
 	public function email_order_user($order_id)
 	{
-			if(!($order = $this->orders->get_order(intval($order_id))) || empty($order->email))
+			if(!($order = $this->orders->get_order((int)($order_id))) || empty($order->email))
 				return false;
 			
 			$purchases = $this->orders->get_purchases(array('order_id'=>$order->id));
@@ -85,7 +85,7 @@ class Notify extends Simpla
 
 	public function email_order_admin($order_id)
 	{
-			if(!($order = $this->orders->get_order(intval($order_id))))
+			if(!($order = $this->orders->get_order((int)($order_id))))
 				return false;
 			
 			$purchases = $this->orders->get_purchases(array('order_id'=>$order->id));
@@ -127,7 +127,7 @@ class Notify extends Simpla
 			$this->design->assign('delivery', $delivery);
 
 			// Пользователь
-			$user = $this->users->get_user(intval($order->user_id));
+			$user = $this->users->get_user((int)($order->user_id));
 			$this->design->assign('user', $user);
 
 			$this->design->assign('order', $order);
@@ -147,13 +147,13 @@ class Notify extends Simpla
 
 	public function email_comment_admin($comment_id)
 	{ 
-			if(!($comment = $this->comments->get_comment(intval($comment_id))))
+			if(!($comment = $this->comments->get_comment((int)($comment_id))))
 				return false;
 			
 			if($comment->type == 'product')
-				$comment->product = $this->products->get_product(intval($comment->object_id));
+				$comment->product = $this->products->get_product((int)($comment->object_id));
 			if($comment->type == 'blog')
-				$comment->post = $this->blog->get_post(intval($comment->object_id));
+				$comment->post = $this->blog->get_post((int)($comment->object_id));
 
 			$this->design->assign('comment', $comment);
 
@@ -165,7 +165,7 @@ class Notify extends Simpla
 
 	public function email_password_remind($user_id, $code)
 	{
-			if(!($user = $this->users->get_user(intval($user_id))))
+			if(!($user = $this->users->get_user((int)($user_id))))
 				return false;
 			
 			$this->design->assign('user', $user);
@@ -182,7 +182,7 @@ class Notify extends Simpla
 
 	public function email_feedback_admin($feedback_id)
 	{ 
-			if(!($feedback = $this->feedbacks->get_feedback(intval($feedback_id))))
+			if(!($feedback = $this->feedbacks->get_feedback((int)($feedback_id))))
 				return false;
 
 			$this->design->assign('feedback', $feedback);

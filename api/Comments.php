@@ -17,7 +17,7 @@ class Comments extends Simpla
 	// Возвращает комментарий по id
 	public function get_comment($id)
 	{
-		$query = $this->db->placehold("SELECT c.id, c.object_id, c.name, c.ip, c.type, c.text, c.date, c.approved FROM __comments c WHERE id=? LIMIT 1", intval($id));
+		$query = $this->db->placehold("SELECT c.id, c.object_id, c.name, c.ip, c.type, c.text, c.date, c.approved FROM __comments c WHERE id=? LIMIT 1", (int)($id));
 
 		if($this->db->query($query))
 			return $this->db->result();
@@ -37,15 +37,15 @@ class Comments extends Simpla
 		$approved_filter = '';
 
 		if(isset($filter['limit']))
-			$limit = max(1, intval($filter['limit']));
+			$limit = max(1, (int)($filter['limit']));
 
 		if(isset($filter['page']))
-			$page = max(1, intval($filter['page']));
+			$page = max(1, (int)($filter['page']));
 
 		if(isset($filter['ip']))
 			$ip = $this->db->placehold("OR c.ip=?", $filter['ip']);
 		if(isset($filter['approved']))
-			$approved_filter = $this->db->placehold("AND (c.approved=? $ip)", intval($filter['approved']));
+			$approved_filter = $this->db->placehold("AND (c.approved=? $ip)", (int)($filter['approved']));
 			
 		if($limit)
 			$sql_limit = $this->db->placehold(' LIMIT ?, ? ', ($page-1)*$limit, $limit);
@@ -90,7 +90,7 @@ class Comments extends Simpla
 			$type_filter = $this->db->placehold('AND c.type=?', $filter['type']);
 
 		if(isset($filter['approved']))
-			$approved_filter = $this->db->placehold('AND c.approved=?', intval($filter['approved']));
+			$approved_filter = $this->db->placehold('AND c.approved=?', (int)($filter['approved']));
 
 		if(!empty($filter['keyword']))
 		{
@@ -142,7 +142,7 @@ class Comments extends Simpla
 	{
 		if(!empty($id))
 		{
-			$query = $this->db->placehold("DELETE FROM __comments WHERE id=? LIMIT 1", intval($id));
+			$query = $this->db->placehold("DELETE FROM __comments WHERE id=? LIMIT 1", (int)($id));
 			$this->db->query($query);
 		}
 	}	

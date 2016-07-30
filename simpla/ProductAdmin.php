@@ -291,7 +291,7 @@ class ProductAdmin extends Simpla
 		else
 		{
 			$id = $this->request->get('id', 'integer');
-			$product = $this->products->get_product(intval($id));
+			$product = $this->products->get_product((int)($id));
 
 			if($product)
 			{
