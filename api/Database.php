@@ -11,7 +11,13 @@ require_once('Simpla.php');
 
 class Database extends Simpla
 {
+    /**
+     * @var mysqli
+     */
     private $mysqli;
+    /**
+     * @var mysqli_result
+     */
     private $res;
 
     /**

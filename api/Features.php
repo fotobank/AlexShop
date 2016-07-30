@@ -219,7 +219,7 @@ class Features extends Simpla
 			$category_id_filter = $this->db->placehold('INNER JOIN __products_categories pc ON pc.product_id=po.product_id AND pc.category_id in(?@)', (array)$filter['category_id']);
 
 		if(isset($filter['visible']))
-			$visible_filter = $this->db->placehold('INNER JOIN __products p ON p.id=po.product_id AND visible=?', intval($filter['visible']));
+			$visible_filter = $this->db->placehold('INNER JOIN __products p ON p.id=po.product_id AND visible=?', (int)$filter['visible']);
 
 		if(isset($filter['brand_id']))
 			$brand_id_filter = $this->db->placehold('AND po.product_id in(SELECT id FROM __products WHERE brand_id in(?@))', (array)$filter['brand_id']);
@@ -229,13 +229,14 @@ class Features extends Simpla
 			{
 				$features_filter .= $this->db->placehold('AND (po.feature_id=? OR po.product_id in (SELECT product_id FROM __options WHERE feature_id=? AND value=? )) ', $feature, $feature, $value);
 			}
-		
 
-		$query = $this->db->placehold("SELECT po.product_id, po.feature_id, po.value, count(po.product_id) as count
-		    FROM __options po
-		    $visible_filter
-			$category_id_filter
-			WHERE 1 $feature_id_filter $product_id_filter $brand_id_filter $features_filter GROUP BY po.feature_id, po.value ORDER BY value=0, -value DESC, value");
+
+		$query = $this->db->placehold("
+            SELECT po.product_id, po.feature_id, po.value, count(po.product_id) as count
+		    FROM __options po $visible_filter $category_id_filter
+			WHERE 1 $feature_id_filter $product_id_filter $brand_id_filter $features_filter 
+			GROUP BY po.feature_id, po.value 
+			ORDER BY value=0, -value DESC, value");
 
 		$this->db->query($query);
 

@@ -36,7 +36,7 @@ class Money extends Simpla
 	{
 		$this->currencies = array();
 		// Выбираем из базы валюты
-		$query = "SELECT id, name, sign, code, rate_from, rate_to, cents, position, enabled FROM __currencies ORDER BY position";
+		$query = 'SELECT id, name, sign, code, rate_from, rate_to, cents, position, enabled FROM __currencies ORDER BY position';
 		$this->db->query($query);
 		
 		$results = $this->db->results();
