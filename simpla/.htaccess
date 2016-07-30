@@ -1,5 +1,5 @@
 AddType application/octet-stream csv
-AuthName "Simpla CMS"
+AuthName "AlexShop CMS"
 AuthType Basic
 AuthUserFile O:\domains\simpla/simpla/.passwd
 require valid-user

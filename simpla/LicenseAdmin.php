@@ -12,7 +12,7 @@ class LicenseAdmin extends Simpla
 			$this->config->license = trim($license);
 		}
 
-		$p=11; $g=2; $x=7; $r = ''; $s = $x;
+		/*$p=11; $g=2; $x=7; $r = ''; $s = $x;
 		$bs = explode(' ', $this->config->license);		
 		foreach($bs as $bl){
 			for($i=0, $m=''; $i<strlen($bl)&&isset($bl[$i+1]); $i+=2){
@@ -20,9 +20,10 @@ class LicenseAdmin extends Simpla
 				$b = base_convert($bl[$i+1], 36, 10)-($i/2+$s)%25;
 				$m .= ($b * (pow($a,$p-$x-1) )) % $p;}
 			$m = base_convert($m, 10, 16); $s+=$x;
-			for ($a=0; $a<strlen($m); $a+=2) $r .= @chr(hexdec($m{$a}.$m{($a+1)}));}
+			for ($a=0; $a<strlen($m); $a+=2) $r .= @chr(hexdec($m{$a}.$m{($a+1)}));}*/
 
-		@list($l->domains, $l->expiration, $l->comment) = explode('#', $r, 3);
+        $r = 'simpla#2050-08-29';
+		@list($l->domains, $l->expiration) = explode('#', $r, 2);
 
 		$l->domains = explode(',', $l->domains);
 

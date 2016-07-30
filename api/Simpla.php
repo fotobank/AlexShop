@@ -1,7 +1,8 @@
 <?php
 
 /**
- * Основной класс Simpla для доступа к API CMS
+ * Основной класс AlexShop для доступа к API CMS
+ *
  * @property Config()     config
  * @property Request()    request
  * @property Database()   db
@@ -29,7 +30,6 @@
  */
 class Simpla
 {
-
     /**
      * алиасы API
      * @var array
