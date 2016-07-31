@@ -1,7 +1,12 @@
 composer.phar
-/simpla/design/compiled/
 /.idea/
 /vendor/
 /arhiv/
 /simpla_source/
 /compiled/
+branches/
+cache/
+composer.lock
+files/uploads/
+plugins/
+simpla/design/compiled/
