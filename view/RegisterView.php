@@ -13,7 +13,7 @@ class RegisterView extends View
 			$name			= $this->request->post('name');
 			$email			= $this->request->post('email');
 			$password		= $this->request->post('password');
-			$captcha_code           = $this->request->post('captcha_code');
+			$captcha_code   = $this->request->post('captcha_code');
 			
 			$this->design->assign('name', $name);
 			$this->design->assign('email', $email);
@@ -35,6 +35,9 @@ class RegisterView extends View
 			}
 			elseif($user_id = $this->users->add_user(array('name'=>$name, 'email'=>$email, 'password'=>$password, 'enabled'=>$default_status, 'last_ip'=>$_SERVER['REMOTE_ADDR'])))
 			{
+				// Отправим письмо пользователю
+				$this->notify->email_registration($user_id, $password);
+
 				$_SESSION['user_id'] = $user_id;
 				if(!empty($_SESSION['last_visited_page']))
 					header('Location: '.$_SESSION['last_visited_page']);				

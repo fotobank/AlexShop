@@ -34,7 +34,7 @@ class Database extends Simpla
      */
     public function __destruct()
     {
-        $this->disconnect();
+     //   $this->disconnect();
     }
 
     /**
@@ -80,7 +80,7 @@ class Database extends Simpla
 
 
     /**
-     * Запрос к базе. Обазятелен первый аргумент - текст запроса.
+     * Запрос к базе. Обязателен первый аргумент - текст запроса.
      * При указании других аргументов автоматически выполняется placehold() для запроса с подстановкой этих аргументов
      *
      * @param array $args

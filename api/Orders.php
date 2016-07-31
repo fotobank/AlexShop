@@ -22,8 +22,9 @@ class Orders extends Simpla
 			$where = $this->db->placehold(' WHERE o.url=? ', $id);
 		
 		$query = $this->db->placehold("SELECT  o.id, o.delivery_id, o.delivery_price, o.separate_delivery,
-										o.payment_method_id, o.paid, o.payment_date, o.closed, o.discount, o.coupon_code, o.coupon_discount,
-										o.date, o.user_id, o.name, o.address, o.phone, o.email, o.comment, o.status,
+										o.payment_method_id, o.paid, o.payment_date, o.closed, o.discount,
+										o.coupon_code, o.coupon_discount, o.date, o.user_id, o.name, 
+										o.address, o.phone, o.email, o.comment, o.status,
 										o.url, o.total_price, o.note, o.ip
 										FROM __orders o $where LIMIT 1");
 
@@ -33,7 +34,7 @@ class Orders extends Simpla
 			return false; 
 	}
 	
-	function get_orders($filter = array())
+	public function get_orders($filter = array())
 	{
 		// По умолчанию
 		$limit = 100;
@@ -157,8 +158,8 @@ class Orders extends Simpla
 			$set_curr_date = ', date=now()';
 		$query = $this->db->placehold("INSERT INTO __orders SET ?%$set_curr_date", $order);
 		$this->db->query($query);
-		$id = $this->db->insert_id();		
-		return $id;
+
+        return $this->db->insert_id();
 	}
 
 	public function get_label($id)
@@ -383,11 +384,11 @@ class Orders extends Simpla
 		if($order->closed && !empty($purchase->amount) && !empty($variant->id))
 		{
 			$stock_diff = $purchase->amount;
-			$query = $this->db->placehold("UPDATE __variants SET stock=stock-? WHERE id=? AND stock IS NOT NULL LIMIT 1", $stock_diff, $variant->id);
+			$query = $this->db->placehold('UPDATE __variants SET stock=stock-? WHERE id=? AND stock IS NOT NULL LIMIT 1', $stock_diff, $variant->id);
 			$this->db->query($query);
 		}
 
-		$query = $this->db->placehold("INSERT INTO __purchases SET ?%", $purchase);
+		$query = $this->db->placehold('INSERT INTO __purchases SET ?%', $purchase);
 		$this->db->query($query);
 		$purchase_id = $this->db->insert_id();
 		
@@ -409,11 +410,11 @@ class Orders extends Simpla
 		if($order->closed && !empty($purchase->amount))
 		{
 			$stock_diff = $purchase->amount;
-			$query = $this->db->placehold("UPDATE __variants SET stock=stock+? WHERE id=? AND stock IS NOT NULL LIMIT 1", $stock_diff, $purchase->variant_id);
+			$query = $this->db->placehold('UPDATE __variants SET stock=stock+? WHERE id=? AND stock IS NOT NULL LIMIT 1', $stock_diff, $purchase->variant_id);
 			$this->db->query($query);
 		}
 		
-		$query = $this->db->placehold("DELETE FROM __purchases WHERE id=? LIMIT 1", (int)($id));
+		$query = $this->db->placehold('DELETE FROM __purchases WHERE id=? LIMIT 1', (int)($id));
 		$this->db->query($query);
 		$this->update_total_price($order->id);				
 		return true;

@@ -8,10 +8,12 @@
  * @author		Denis Pikusov
  *
  */
- 
+
+require_once('Simpla.php');
+
 class Notify extends Simpla
 {
-    function email($to, $subject, $message, $from = '', $reply_to = '')
+    public function email($to, $subject, $message, $from = '', $reply_to = '')
     {
     	$headers = "MIME-Version: 1.0\n" ;
     	$headers .= "Content-type: text/html; charset=utf-8; \r\n"; 
@@ -193,5 +195,20 @@ class Notify extends Simpla
 			$this->email($this->settings->comment_email, $subject, $email_template, "$feedback->name <$feedback->email>", "$feedback->name <$feedback->email>");
 	}
 
+
+    // Функция отправки письма о регистрации
+    public function email_registration($user_id, $password)
+    {
+        if(!($user = $this->users->get_user((int)$user_id)))
+            return false;
+
+        $this->design->assign('password', $password);
+        $this->design->assign('user', $user);
+
+        // Отправляем письмо
+        $email_template = $this->design->fetch($this->config->root_dir.'design/'.$this->settings->theme.'/html/email_registration.tpl');
+        $subject = $this->design->get_var('subject');
+        $this->email($user->email, $subject, $email_template, $this->settings->site_name.' <'.$this->settings->notify_from_email.'>');
+    }
 
 }

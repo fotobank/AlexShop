@@ -55,6 +55,66 @@
 			{/foreach}
 			</table>
 			<input type="submit" class="button" value="в корзину" data-result-text="добавлено"/>
+
+            <a href="#oneclick" class="button various oneclick">купить в 1 клик</a>
+
+<div id="oneclick" class="window" style="display: none;">
+        <div class="title">Купить {$product->name|escape|rtrim}</div>
+        <ul>
+                <li><span>Ваше имя:</span><input class="onename" value="" type="text"></li>
+                <li><span>Телефон:</span><input class="onephone" value="" type="text"></li>
+        </ul>
+        <button type="submit" name="enter" value="1" class="oneclickbuy button">Купить!</button>
+</div>
+
+            {literal}
+                <script>
+        $(function() {
+
+            $(".various").fancybox({
+                helpers : {
+                    overlay : {
+                        locked : false
+                    }
+                },
+                closeBtn: false,
+                fitToView: false,
+                autoSize: true,
+                minHeight: "0",
+                minWidth: "350",
+                scrolling: false,
+                closeClick      : false,
+                openEffect      : 'fade',
+                closeEffect     : 'none'
+            });
+
+            $('.oneclickbuy').click( function() {
+
+                if($('.variants').find('input[name=variant]:checked').size()>0) variant = $('.variants input[name=variant]:checked').val();
+
+                if( !$('.onename').val() || !$('.onephone').val() ) {
+                    alert("Заполните все поля!");
+                    return false;
+                }
+
+                $.ajax({
+                    type: "post",
+                    url: "/ajax/oneclick.php",
+                    data: {amount: 1, variant: variant, name: $('.onename').val() , phone: $('.onephone').val() },
+                    dataType: 'json'
+                });
+
+                $('.oneclick').hide(200);
+                $("#oneclick").html("<div class='title'>Спасибо за заказ!</div><p>В ближайшее время с вами свяжется наш менеджер!</p><button type='submit' class='button' onclick='$.fancybox.close();$(\".oneclick\").hide();return false;'>Закрыть!</button>");
+
+                return false;
+
+            });
+
+        });
+        </script>
+            {/literal}
+
 		</form>
 		<!-- Выбор варианта товара (The End) -->
 		{else}
