@@ -44,6 +44,7 @@ class CartView extends View
     {
     	$order = new stdClass;
     	$order->delivery_id = $this->request->post('delivery_id', 'integer');
+        $order->payment_method_id = $this->request->post('payment_method_id', 'integer');
     	$order->name        = $this->request->post('name');
     	$order->email       = $this->request->post('email');
     	$order->address     = $this->request->post('address');
@@ -169,7 +170,11 @@ class CartView extends View
 		// Способы доставки
 		$deliveries = $this->delivery->get_deliveries(array('enabled'=>1));
 		$this->design->assign('deliveries', $deliveries);
-		
+
+        // Варианты оплаты
+        $payment_methods = $this->payment->get_payment_methods(array('enabled'=>1));
+        $this->design->assign('payment_methods', $payment_methods);
+
 		// Данные пользователя
 		if($this->user)
 		{

@@ -107,7 +107,12 @@
 	
 	<!-- Основная часть страницы -->
 	<div id="middle">
-		{$content}
+		{*{if $smarty.server.REQUEST_URI == "/page"}
+            Содержимое конкретной страницы с адресом: site.ru/page
+        {else}
+            {$content}
+        {/if}*}
+        {$content}
 	</div>
 	<!-- Основная часть страницы (The End) --> 
 	

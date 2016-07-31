@@ -160,6 +160,37 @@
 			</div>
 			<!-- Поиск (The End)-->
 
+            <style type="text/css">
+                .mylist{
+                    padding:5px;
+                    margin:5px 0;
+                    background: #FFFFFF;
+                    border: 1px solid #E8E8E8;
+                    border-radius:3px;
+                    width:190px;
+                }
+                .mylist_add{
+                    padding:5px;
+                    margin:2px 0;
+                    background: #FFFFFF;
+                    border: 1px solid #E8E8E8;
+                    border-radius:3px;
+                    width:190px;
+                }
+            </style>
+
+            {get_session_products key=compare}
+            <div id="compare_informer" class='mylist'>
+            {include file='products_session_compare_informer.tpl' session=$compare}
+            </div>
+
+            {get_session_products key=wishlist}
+            <div id="wishlist_informer" class='mylist'>
+            {include file='products_session_wishlist_informer.tpl' session=$wishlist}
+            </div>
+
+            <script src="design/{$settings->theme}/js/ajax_cart.js"></script>
+            <script src="design/{$settings->theme}/js/product_to_session.js"></script>
 			
 			<!-- Меню каталога -->
 			<div id="catalog_menu">

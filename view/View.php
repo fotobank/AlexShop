@@ -113,6 +113,12 @@ class View extends Simpla
             $this->design->smarty->registerPlugin('function', 'get_featured_products', [$this, 'get_featured_products_plugin']);
             $this->design->smarty->registerPlugin('function', 'get_new_products', [$this, 'get_new_products_plugin']);
             $this->design->smarty->registerPlugin('function', 'get_discounted_products', [$this, 'get_discounted_products_plugin']);
+            // MyList
+            $this->design->smarty->registerPlugin("function", "get_products",            array($this, 'get_products_plugin'));
+            $this->design->smarty->registerPlugin("function", "get_session_products",    array($this, 'get_session_products_plugin'));
+            $this->design->smarty->registerPlugin("function", "remove_product_session",  array($this, 'remove_product_session_plugin'));
+            $this->design->smarty->registerPlugin("function", "add_product_session",     array($this, 'add_product_session_plugin'));
+            // MyList END
             $this->design->smarty->registerPlugin("function", "get_uni", array($this, 'uni_plugin'));
         }
     }
@@ -138,9 +144,117 @@ class View extends Simpla
             $smarty->assign($params['var'], $this->blog->get_posts($params));
     }
 
+    // MyList
     /**
      * @param $params
-     * @param $smarty
+     * @param $smarty Smarty()
+     *
+     * @return bool
+     */
+    public function add_product_session_plugin($params, &$smarty)
+    {
+        $key  = $params['key'];
+        $id   = $params['id'];
+        if(empty($key) && empty($id))
+            return false;
+        if(!$this->design->smarty->templateExists('products_session_'.$key.'_informer.tpl'))
+            return false;
+        $product = $this->products->get_product((int)$id);
+        if(empty($product))
+            return false;
+        $_SESSION[$key][$product->id] = $product->id;
+    }
+
+    /**
+     * @param $params
+     * @param $smarty Smarty()
+     */
+    public function remove_product_session_plugin($params, &$smarty)
+    {
+        if(!empty($params['key']) && $params['remove'] && !empty($_SESSION[$params['key']][$params['remove']]))
+        {
+            unset($_SESSION[$params['key']][$params['remove']]);
+        }
+    }
+
+    /**
+     * @param $params
+     * @param $smarty Smarty()
+     */
+    public function get_session_products_plugin($params, &$smarty)
+    {
+        if(!empty($_SESSION[$params['key']]))
+        {
+            $this->key   = $params['key']; // ключ
+            $this->ids   = $_SESSION[$params['key']]; // сессия
+            $this->count = count($_SESSION[$params['key']]); // количество
+            $smarty->assign($params['key'], $this);
+        }
+    }
+
+    /**
+     * @param $params
+     * @param $smarty Smarty()
+     *
+     * @return bool
+     */
+    public function get_products_plugin($params, &$smarty)
+    {
+        if(!empty($params['var']))
+        {
+            if(!empty($params['get_session_products'])){
+                if(!empty($_SESSION[$params['get_session_products']])){
+                    $params['id'] = $_SESSION[$params['get_session_products']];
+                    $params['visible'] = 1;
+                }
+                else{
+                    return false;
+                }
+            }
+            foreach($this->products->get_products($params) as $p)
+                $products[$p->id] = $p;
+            if(!empty($products))
+            {
+                $products_ids = array_keys($products);
+                $variants = $this->variants->get_variants(array('product_id'=>$products_ids, 'in_stock'=>true));
+                foreach($variants as &$variant)
+                {
+                    $products[$variant->product_id]->variants[] = $variant;
+                }
+                $images = $this->products->get_images(array('product_id'=>$products_ids));
+                foreach($images as $image)
+                    $products[$image->product_id]->images[] = $image;
+
+                if(!empty($params['data_features'])){
+                    $properties = $this->features->get_product_options($products_ids);
+                    foreach($properties as $property)
+                        $products[$property->product_id]->options[] = $property;
+                }
+                if(!empty($params['data_categories'])){
+                    $categories = $this->categories->get_categories(array('product_id'=>$products_ids));
+                    $product_categories = $this->categories->get_product_categories($products_ids);
+                    foreach($product_categories as $category)
+                        $products[$category->product_id]->categories[$category->category_id] = $categories[$category->category_id];
+                }
+                foreach($products as &$product)
+                {
+                    if(isset($product->variants[0]))
+                        $product->variant = $product->variants[0];
+                    if(isset($product->images[0]))
+                        $product->image = $product->images[0];
+                    if(!empty($product->categories))
+                        $product->category = reset($product->categories);
+                }
+            }
+            $smarty->assign($params['var'], $products);
+
+        }
+    }
+    // MyList END
+
+    /**
+     * @param $params
+     * @param $smarty Smarty()
      */
     public function get_brands_plugin($params, &$smarty)
     {
@@ -152,7 +266,7 @@ class View extends Simpla
 
     /**
      * @param $params
-     * @param $smarty
+     * @param $smarty Smarty()
      */
     public function get_browsed_products($params, &$smarty)
     {
@@ -171,6 +285,7 @@ class View extends Simpla
                 if (isset($products[$browsed_product_image->product_id]))
                     $products[$browsed_product_image->product_id]->images[] = $browsed_product_image;
 
+            $result = [];
             foreach ($browsed_products_ids as $id){
                 if (isset($products[$id])){
                     if (isset($products[$id]->images[0]))
@@ -185,7 +300,7 @@ class View extends Simpla
 
     /**
      * @param $params
-     * @param $smarty
+     * @param $smarty Smarty()
      */
     public function get_featured_products_plugin($params, &$smarty)
     {
@@ -230,7 +345,7 @@ class View extends Simpla
 
     /**
      * @param $params
-     * @param $smarty
+     * @param $smarty Smarty()
      */
     public function get_new_products_plugin($params, &$smarty)
     {
@@ -276,7 +391,7 @@ class View extends Simpla
 
     /**
      * @param $params
-     * @param $smarty
+     * @param $smarty Smarty()
      */
     public function get_discounted_products_plugin($params, &$smarty)
     {

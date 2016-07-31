@@ -8,3 +8,11 @@
 
 <!-- Тело страницы -->
 {$page->body}
+
+{if $page->url == 'compare'}
+    {include file='products_session_compare.tpl'}
+{/if}
+
+{if $page->url == 'wishlist'}
+    {include file='products_session_wishlist.tpl'}
+{/if}

@@ -199,7 +199,25 @@ $("input[name='coupon_code']").keypress(function(event){
 	{/foreach}
 </ul>
 {/if}
-    
+
+{* Выбор способа оплаты *}
+{if $payment_methods && !$payment_method}
+    <h2>Выберите способ оплаты</h2>
+    <ul id="deliveries">
+    {foreach $payment_methods as $payment_method}
+        <li>
+            <div class="checkbox">
+                <input type=radio name=payment_method_id value='{$payment_method->id}' {if $payment_method@first}checked{/if} id=payment_{$payment_method->id}>
+            </div>
+            <h3><label for=payment_{$payment_method->id}>    {$payment_method->name}{*, к оплате {$cart->total_price|convert:$payment_method->currency_id} {$all_currencies[$payment_method->currency_id]->sign}*}</label></h3>
+            <div class="description">
+            {$payment_method->description}
+            </div>
+        </li>
+    {/foreach}
+</ul>
+{/if}
+
 <h2>Адрес получателя</h2>
 	
 <div class="form cart_form">         

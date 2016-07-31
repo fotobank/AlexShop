@@ -12,7 +12,7 @@
 	{if $brand}
 	→ <a href="catalog/{$cat->url}/{$brand->url}">{$brand->name|escape}</a>
 	{/if}
-	→  {$product->name|escape}                
+	→  {$product->name|escape}
 </div>
 <!-- Хлебные крошки #End /-->
 
@@ -20,19 +20,21 @@
 
 <div class="product">
 
-	<!-- Большое фото -->
-	{if $product->image}
-	<div class="image">
-		<a href="{$product->image->filename|resize:800:600:w}" class="zoom" rel="group"><img src="{$product->image->filename|resize:300:300}" alt="{$product->product->name|escape}" /></a>
-	</div>
-	{/if}
-	<!-- Большое фото (The End)-->
+	<!-- Фото товара -->
+    {if $product->image}
+        <div class="image">
+         {if $product->variants|count > 0}{foreach $product->variants as $v}{if $v->compare_price > 0}<div class="sale_cat">
+             <div style="padding-top:2px; color:#FFFFFF; font-size:13px; font-weight:bold; width:56px; text-align:center;">-{floor(abs(100-{$product->variant->price}/($product->variant->compare_price)*100))}% </div></div>{/if}{/foreach}{/if}
+            <a href="products/{$product->url}"><img src="{$product->image->filename|resize:200:200}" alt="{$product->name|escape}"/></a>
+                </div>
+    {/if}
+    <!-- Фото товара (The End) -->
 
 	<!-- Описание товара -->
 	<div class="description">
 	
 		{$product->body}
-		
+
 		{if $product->variants|count > 0}
 		<!-- Выбор варианта товара -->
 		<form class="variants" action="/cart">
@@ -73,7 +75,7 @@
 	{/if}
 	<!-- Дополнительные фото продукта (The End)-->
 
-	
+
 	{if $product->features}
 	<!-- Характеристики товара -->
 	<h2>Характеристики</h2>
@@ -159,7 +161,7 @@
 <div id="comments">
 
 	<h2>Комментарии</h2>
-	
+
 	{if $comments}
 	<!-- Список с комментариями -->
 	<ul class="comment_list">
@@ -167,12 +169,12 @@
 		<a name="comment_{$comment->id}"></a>
 		<li>
 			<!-- Имя и дата комментария-->
-			<div class="comment_header">	
+			<div class="comment_header">
 				{$comment->name|escape} <i>{$comment->date|date}, {$comment->date|time}</i>
 				{if !$comment->approved}ожидает модерации</b>{/if}
 			</div>
 			<!-- Имя и дата комментария (The End)-->
-			
+
 			<!-- Комментарий -->
 			{$comment->text|escape|nl2br}
 			<!-- Комментарий (The End)-->
@@ -185,8 +187,8 @@
 		Пока нет комментариев
 	</p>
 	{/if}
-	
-	<!--Форма отправления комментария-->	
+
+	<!--Форма отправления комментария-->
 	<form class="comment_form" method="post">
 		<h2>Написать комментарий</h2>
 		{if $error}
@@ -208,7 +210,7 @@
 		<input class="button" type="submit" name="comment" value="Отправить" />
 		
 		<label for="comment_captcha">Число</label>
-		<div class="captcha"><img src="captcha/image.php?{math equation='rand(10,10000)'}" alt='captcha'/></div> 
+		<div class="captcha"><img src="captcha/image.php?{math equation='rand(10,10000)'}" alt='captcha'/></div>
 		<input class="input_captcha" id="comment_captcha" type="text" name="captcha_code" value="" data-format="\d\d\d\d" data-notice="Введите капчу"/>
 		
 		</div>

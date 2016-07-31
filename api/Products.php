@@ -38,7 +38,12 @@ class Products extends Simpla
         $discounted_filter = '';
         $in_stock_filter = '';
         $group_by = '';
-        $order = 'p.position DESC';
+
+        if (isset($filter['order'])){
+            $order = $filter['order'];
+        } else {
+            $order = 'p.position DESC';
+        }
 
         if (isset($filter['limit']))
             $limit = max(1, (int)($filter['limit']));

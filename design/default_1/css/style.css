@@ -931,4 +931,21 @@ table.order_info td
 
 /* @end */
 
+.sale {
+    background:url('../images/save.png') no-repeat;
+    position:absolute;
+    width:141px;
+    height:47px;
+    margin:15px 0 0 -19px;
+    font-size:18px;
+    font-weight:bold;
+}
+.sale_cat {
+    background:url('../images/sale_cat.png') no-repeat;
+    position:absolute;
+    width:116px;
+    height:27px;
+    margin:10px 0 0 -13px;
+}
+
 
