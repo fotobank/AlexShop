@@ -82,7 +82,7 @@ class Request extends Simpla
     		$val = file_get_contents('php://input');
     		
     	if($type == 'string')
-    		return strval(preg_replace('/[^\p{L}\p{Nd}\d\s_\-\.\%\s]/ui', '', $val));
+    		return (string)preg_replace('/[^\p{L}\p{Nd}\d\s_\-\.\%\s]/ui', '', $val);
     		
     	if($type == 'integer')
     		return (int)($val);

@@ -185,10 +185,11 @@ class View extends Simpla
     {
         if(!empty($_SESSION[$params['key']]))
         {
-            $this->key   = $params['key']; // ключ
-            $this->ids   = $_SESSION[$params['key']]; // сессия
-            $this->count = count($_SESSION[$params['key']]); // количество
-            $smarty->assign($params['key'], $this);
+            $result = new stdClass();
+            $result->key   = $params['key']; // ключ
+            $result->ids   = $_SESSION[$params['key']]; // сессия
+            $result->count = count($_SESSION[$params['key']]); // количество
+            $smarty->assign($params['key'], $result);
         }
     }
 
