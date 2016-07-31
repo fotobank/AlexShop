@@ -397,7 +397,7 @@ class Database extends Simpla
         fclose($h);
     }
 
-    function restore($filename)
+    public function restore($filename)
     {
         $templine = '';
         $h = fopen($filename, 'r');

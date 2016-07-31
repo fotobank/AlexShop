@@ -204,7 +204,7 @@ class Categories extends Simpla
 		$categories = $this->db->results();
 				
 		$finish = false;
-		// Не кончаем, пока не кончатся категории, или пока ниодну из оставшихся некуда приткнуть
+		// Не заканчиваем, пока не кончатся категории, или пока не одну из оставшихся некуда будет приткнуть
 		while(!empty($categories)  && !$finish)
 		{
 			$flag = false;

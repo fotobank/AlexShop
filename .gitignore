@@ -1,4 +1,5 @@
 composer.phar
+/simpla/design/compiled/
 /.idea/
 /vendor/
 /arhiv/

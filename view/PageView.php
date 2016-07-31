@@ -14,7 +14,7 @@ require_once('View.php');
 
 class PageView extends View
 {
-	function fetch()
+	public function fetch()
 	{
 		$url = $this->request->get('page_url', 'string');
 

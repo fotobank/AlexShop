@@ -13,6 +13,9 @@
 
 require_once('View.php');
 
+/**
+ * @property PageView() main
+ */
 class IndexView extends View
 {
     public $modules_dir = 'view/';
