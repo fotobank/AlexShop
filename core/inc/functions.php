@@ -725,26 +725,8 @@ function cleanInput($input)
         '@<style[^>]*?>.*?</style>@siU', // теги style
         '@<![\s\S]*?--[ \t\n\r]*>@' // многоуровневые комментарии
     ];
-    $output = preg_replace($search, '', $input);
 
-    return $output;
-}
-
-// $text = preg_replace('/(\r\n){2,}/i', '\r\n\r\n', $text); заменить двойный переводы строк
-// $value = preg_replace('/\s{2,}/', '', $value); убрать лишние пробелы
-
-
-/**
- * @param $data
- *
- * @return mixed
- */
-function sql_valid($data)
-{
-    $data = str_replace(["\\", "'", '"', "\x00", "\x1a", "\r", "\n"],
-                        ["\\\\", "\'", '\"', "\\x00", "\\x1a", "\\r", "\\n"], $data);
-
-    return ($data);
+    return preg_replace($search, '', $input);
 }
 
 /**
@@ -756,7 +738,6 @@ function sql_valid($data)
  */
 function sanitize($input)
 {
-
     if(is_array($input))
     {
         foreach($input as $var => $val)
@@ -774,8 +755,24 @@ function sanitize($input)
         $output = sql_valid($input);
 
     }
-
     return isset($output) ? $output : false;
+}
+
+// $text = preg_replace('/(\r\n){2,}/i', '\r\n\r\n', $text); заменить двойный переводы строк
+// $value = preg_replace('/\s{2,}/', '', $value); убрать лишние пробелы
+
+
+/**
+ * @param $data
+ *
+ * @return mixed
+ */
+function sql_valid($data)
+{
+    $data = str_replace(["\\", "'", '"', "\x00", "\x1a", "\r", "\n"],
+        ["\\\\", "\'", '\"', "\\x00", "\\x1a", "\\r", "\\n"], $data);
+
+    return ($data);
 }
 
 /**

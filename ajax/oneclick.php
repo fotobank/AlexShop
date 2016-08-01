@@ -8,10 +8,9 @@ $variant_id = $simpla->request->post('variant', 'integer');
 $amount = $simpla->request->post('amount', 'integer');
 
 $order = new stdClass;
-$order->name = $simpla->request->post('name', 'string');
-$order->phone = $simpla->request->post('phone', 'string');
+$order->name = sanitize($simpla->request->post('name', 'string'));
+$order->phone = sanitize($simpla->request->post('phone', 'string'));
 $order->ip = ip();
-// $order->total_price = 1;
 
 // добавляем заказ
 $order_id = $simpla->orders->add_order($order);
