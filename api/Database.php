@@ -34,7 +34,9 @@ class Database extends Simpla
      */
     public function __destruct()
     {
-     //   $this->disconnect();
+        if(!DEBUG_MODE){
+            $this->disconnect();
+        }
     }
 
     /**
@@ -43,7 +45,7 @@ class Database extends Simpla
     public function connect()
     {
         // При повторном вызове возвращаем существующий линк
-        if (!empty($this->mysqli))
+        if (null !== $this->mysqli)
             return $this->mysqli;
         // Иначе устанавливаем соединение
         else
@@ -57,7 +59,7 @@ class Database extends Simpla
         } // Или настраиваем соединение
         else {
             if ($this->config->db_charset)
-                $this->mysqli->query('SET NAMES ' . $this->config->db_charset);
+                $this->mysqli->set_charset($this->config->db_charset);
             if ($this->config->db_sql_mode)
                 $this->mysqli->query('SET SESSION SQL_MODE = "' . $this->config->db_sql_mode . '"');
             if ($this->config->db_timezone)

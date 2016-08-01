@@ -524,7 +524,7 @@ function my_htmlspecialchars($str, $quote, $encoding = 'cp1251')
  * $query = "SELECT * FROM users WHERE username = '$username'";
  *
  * @param      $input
- * @param bool $is_sql
+ * @param mysqli $is_sql
  *
  * @return mixed|string
  */
@@ -539,7 +539,7 @@ function sterilize($input, $is_sql = false)
 
     if($is_sql)
     {
-        $input = mysql_real_escape_string($input);
+        $input = mysqli_real_escape_string($is_sql, $input);
     }
 
     $input = strip_tags($input);
@@ -548,79 +548,56 @@ function sterilize($input, $is_sql = false)
     return $input;
 }
 
-/**
- * @param string $addr
- * @param string $code
- */
-function main_redir($addr = '', $code = '302')
-{
-    if(empty($addr))
+if (!function_exists('redirect')){
+    function redirect($filename)
     {
-        if(isset($_SERVER['HTTP_REFERER']))
-        {
-            header('location: ' . $_SERVER['HTTP_REFERER'], true, $code);
-        }
-        else
-        {
-            header('location: /index.php', true, $code);
+        if (!headers_sent())
+            header('Location: ' . $filename);
+        else {
+            echo '<script type="text/javascript">';
+            echo 'window.location.href="' . $filename . '";';
+            echo '</script>';
+            echo '<noscript>';
+            echo '<meta http-equiv="refresh" content="0;url=' . $filename . '" />';
+            echo '</noscript>';
         }
     }
-    else
+}
+
+if (!function_exists('location')){
+    /**
+     * @param string $addr
+     * @param string $code
+     */
+    function location($addr = '', $code = '302')
     {
-        header('location: ' . $addr, true, $code);
+        if (empty($addr)){
+            if (isset($_SERVER['HTTP_REFERER'])){
+                header('location: ' . $_SERVER['HTTP_REFERER'], true, $code);
+            } else {
+                header('location: /index.php', true, $code);
+            }
+        } else {
+            header('location: ' . $addr, true, $code);
+        }
+        exit();
     }
-
-    exit();
 }
 
-/**
- *
- */
-function admin_only()
-{
-    if(!isset($_SESSION['logged']))
+if (!function_exists('output_send')){
+    /**
+     * check also if any other output is already sent
+     * @return bool
+     */
+    function output_send()
     {
-        echo ' <div class="title2"> Извините ,данная функция доступна только для администратора
- <br/><a href = "index.php" > Админка</a></div> ';
+        if (!headers_sent() && error_get_last() == null){
+            return false;
+
+        }
+
+        return true;
     }
-}
-
-/**
- * @param $str
- *
- * @return bool
- */
-function if_admin($str)
-{
-    if(Session::get('logged') && Session::get('admnews') === md5(login() . '///' . pass()))
-    {
-        return $str;
-    }
-
-    return false;
-}
-
-/**
- * @return mixed
- */
-function login()
-{
-    Db::where('userId', 1);
-    $login = Db::getOne(TBL_USERS, 'foreignKey');
-
-    return $login['foreignKey'];
-}
-
-
-/**
- * @return mixed
- */
-function pass()
-{
-    Db::where('userId', 1);
-    $login = Db::getOne(TBL_USERS, 'token');
-
-    return $login['token'];
 }
 
 /**

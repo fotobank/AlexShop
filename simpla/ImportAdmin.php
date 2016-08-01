@@ -20,7 +20,7 @@ class ImportAdmin extends Simpla
 		if(setlocale(LC_ALL, 0) != $this->locale)
 		{
 			$this->design->assign('message_error', 'locale_error');
-			$this->design->assign('locale', $this->locale);			
+			$this->design->assign('locale', $this->locale);
 		}
 		setlocale(LC_ALL, $old_locale);
 			
